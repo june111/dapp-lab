@@ -1,4 +1,4 @@
-# vue-dapp-dice
+# dapp-test
 
 ## Project setup
 ```
