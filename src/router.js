@@ -8,8 +8,7 @@ export default new Router({
   base: 'dapp-fun-test/',
   routes: [{
     path: '/',
-    name: 'casino-dapp',
-    component: () =>import('./components/dice.vue')
+    component: () =>import('./components/random.vue')
 
   }]
 })
