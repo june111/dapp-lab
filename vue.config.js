@@ -1,5 +1,5 @@
 module.exports = {
-  baseUrl: 'dapp-fun-test/',
+  publicPath: 'dapp-fun-test/',
   outputDir: 'docs',
   productionSourceMap: false,
 }
