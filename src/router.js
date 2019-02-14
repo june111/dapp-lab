@@ -12,5 +12,8 @@ export default new Router({
   },{
     path: '/record',
     component: () =>import('./components/record.vue')
+  },{
+    path: '/test',
+    component: () =>import('./components/test.vue')
   }]
 })
