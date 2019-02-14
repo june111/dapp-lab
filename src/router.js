@@ -9,6 +9,8 @@ export default new Router({
   routes: [{
     path: '/',
     component: () =>import('./components/random.vue')
-
+  },{
+    path: '/record',
+    component: () =>import('./components/record.vue')
   }]
 })
