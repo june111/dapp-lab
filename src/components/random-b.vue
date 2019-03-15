@@ -6,34 +6,25 @@
     <button v-else @click="getApiRadNum">Generate</button>
     <p>Random Number: {{luckyNum}}</p>
     <p>{{luckyNumTime}}</p>
-
   </div>
 </template>
 <script>
 import Web3 from 'web3'
 import { parseTime } from '../util'
-import { ABI, contractAddr } from '../contract/OraclizeAPI/abi'
-import {
-  randomABI,
-  randomContractAddr
-} from '../contract/OraclizeRandom/abi'
-import {
-  wolABI,
-  wolContractAddr
-} from '../contract/WolframAlpha/abi'
+import { ABI, contractAddr } from '../contract/teatLottory/abi'
+
 export default {
   created() {
     this.getWeb3()
-    this.setContract()
   },
   data() {
     return {
-      //初始化web3
+      // 初始化web3
       web3: undefined,
       isMetamask: false,
 
-      //合约提供的数据
-      //实例化合约
+      // 合约提供的数据
+      // 实例化合约
       RNGContract: undefined,
       RNG: undefined, // 合约实例
       luckyNum: 'empty',
@@ -58,7 +49,7 @@ export default {
     }
   },
   methods: {
-    getWeb3() {
+    async getWeb3() {
 
       // Modern dapp browsers...
       if (window.ethereum) {
@@ -68,6 +59,12 @@ export default {
           ethereum.enable();
           // Acccounts now exposed
           this.isMetamask = true
+          await ethereum.enable();
+          var accounts = await web3.eth.getAccounts();
+          this.myAddress = accounts[0]
+          console.log('accounts', accounts)
+          console.log('Get Web3!')
+          this.setContract()
 
         } catch (error) {
           // User denied account access...
@@ -86,18 +83,14 @@ export default {
         this.isMetamask = false
       }
 
-      console.log('Get Web3!')
     },
 
     setContract() {
-      console.log('cc',new Web3.eth)
-      const a = new window.web3.eth.Contract(ABI, contractAddr)
-      // this.RNG = a
-      // this.oraRadNumContract = window.web3.eth.contract(randomABI);
-      // this.oraRandom = this.oraRadNumContract.at(randomContractAddr);
-      // this.wolContract = window.web3.eth.contract(wolABI);
-      // this.wolRandom = this.wolContract.at(wolContractAddr);
-      console.log('Set Contract!')
+      console.log('cc')
+      var myContract = new web3.eth.Contract(ABI, contractAddr);
+      this.RNG = myContract
+
+      console.log('ss',10%3)
     },
     getAccount() {
 
@@ -114,48 +107,65 @@ export default {
     getApiRadNum() {
       this.luckyNum = 'empty'
       this.getApiRadNumPending = true
-
+      let start, end
       if (this.isMetamask) {
         // console.log('eth', window.web3.eth)
-        this.RNG.getNumber({
-          value: window.web3.toWei('0.01', 'ether'),
-          from: window.web3.eth.accounts[0]
-        }, (err, result) => {
-          if (err) {
-            console.log(err)
-          } else {
-            console.log('tx', result)
-            let start = new Date().getTime()
+        this.RNG.methods.startChooseWinnerProcess.send({
+            value: window.web3.utils.toWei('0.01', 'ether'),
+            from: this.myAddress
+          })
+          .on('error', (error) => { console.error(error) })
+          .on('transactionHash', (hash) => {
+            console.log('交易哈希', hash)
+            start = new Date().getTime()
 
-            let event = this.RNG.LogNewOraclizeQuery();
-            // watch for changes
-            event.watch(function(error, result) {
-              if (!error)
-                console.log(result.args.description);
-            });
+          })
 
-            let fetchNum = this.RNG.LogNumberUpdated()
-            fetchNum.watch((err, result) => {
-              if (err) {
-                console.error(err)
-              } else {
-                this.getApiRadNumPending = false
+          .on('confirmation', (confirmationNumber, receipt) => {
+            this.getApiRadNumPending = false
+            console.log('确认的区块数', confirmationNumber)
+            if (confirmationNumber === 1) {
+              this.RNG.events.logRandom({
+                fromBlock: receipt.blockNumber
+              }, (error, result) => {
+                if (!error) {
+                  console.log('logRandom', result);
+                  if (result.returnValues.dice) this.luckyNum = result.returnValues.dice
+                } else {
+                  console.log(error);
+                }
+              });
 
-                // console.log('args', result.args)
-                this.luckyNum = result.args.dice
-                fetchNum.stopWatching();
-                event.stopWatching();
-                let end = new Date().getTime(); // 结束时间
-                this.luckyNumTime = 'Cost: ' + parseTime((end - start), '{i}:{s}')
+              // this.RNG.events.WinnerSelected({
+              //   fromBlock: receipt.blockNumber
+              // }, (error, result) =>{
+              //   if (!error) {
+              //     console.log('WinnerSelected',result);
+              //   } else {
+              //     console.log(error);
+              //   }
+              // });
 
-              }
-            })
-          }
-        })
+              this.RNG.events.NewRoundStarted({
+                fromBlock: receipt.blockNumber
+              }, (error, result) => {
+                if (!error) {
+                  console.log('NewRoundStarted', result.returnValues.timestamp);
+                } else {
+                  console.log(error);
+                }
+              });
+            }
+            // console.log('confirmation receipt2', receipt)
+          })
+          .on('receipt', (receipt) => {
+            console.log('receipt1', receipt)
+            end = new Date().getTime(); // 结束时间
+            this.luckyNumTime = 'Cost: ' + parseTime((end - start), '{i}:{s}')
+          })
+
       }
     },
-
-
 
   }
 }
