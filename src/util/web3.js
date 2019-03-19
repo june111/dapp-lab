@@ -25,3 +25,25 @@ export function getETHBalance(addr) {
   })
 
 }
+
+// GasPrice
+export function getGasPrice() {
+    return new Promise((resolve, reject) => {
+        window.web3.eth.getGasPrice((error, result) => {
+            if (!error) {
+                resolve(result)
+            } else {
+                console.error(error);
+            }
+        })
+    })
+}
+
+// gas Limit
+export function estimateGas(_to, _data) {
+    return web3.eth.estimateGas({
+        to: _to,
+        data: _data
+    })
+
+}

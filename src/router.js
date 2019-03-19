@@ -24,5 +24,9 @@ export default new Router({
   },{
     path: '/test',
     component: () =>import('./components/test.vue')
-  }]
+  },{
+    path: '*',
+    component: () =>import('./view/404.vue')
+  }
+  ]
 })

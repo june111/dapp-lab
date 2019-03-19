@@ -1,17 +1,20 @@
 <template>
   <div class="RNG">
     <h3>Ropsten Only</h3>
-    <p>Get random number between 1 and 6 from API</p>
+    <button @click="entry">参加</button>
+    <p>Get random number </p>
     <img v-if="getApiRadNumPending" class="loader" src="https://loading.io/spinners/double-ring/lg.double-ring-spinner.gif" />
     <button v-else @click="getApiRadNum">Generate</button>
     <p>Random Number: {{luckyNum}}</p>
     <p>{{luckyNumTime}}</p>
+    <input v-model="historyNum"><button @click="getHistory">历史</button>
   </div>
 </template>
 <script>
+    // "web3": "^1.0.0-beta.48"
 import Web3 from 'web3'
 import { parseTime } from '../util'
-import { ABI, contractAddr } from '../contract/teatLottory/abi'
+import { ABI, contractAddr } from '../contract/Lottery/abi'
 
 export default {
   created() {
@@ -44,7 +47,7 @@ export default {
       getWolNumPending: false,
 
       myAddress: '',
-
+      historyNum: '',
 
     }
   },
@@ -89,8 +92,6 @@ export default {
       console.log('cc')
       var myContract = new web3.eth.Contract(ABI, contractAddr);
       this.RNG = myContract
-
-      console.log('ss',10%3)
     },
     getAccount() {
 
@@ -103,6 +104,17 @@ export default {
 
       }
 
+    },
+    entry() {
+      this.RNG.methods.enter.send({
+          value: window.web3.utils.toWei('0.1', 'ether'),
+          from: this.myAddress
+        })
+        .on('error', (error) => { console.error(error) })
+        .on('transactionHash', (hash) => {
+          console.log('交易哈希', hash)
+
+        })
     },
     getApiRadNum() {
       this.luckyNum = 'empty'
@@ -166,6 +178,12 @@ export default {
 
       }
     },
+    getHistory() {
+
+      this.RNG.methods.getHistory(this.historyNum).call().then(res => {
+        console.log('res', res)
+      })
+    }
 
   }
 }

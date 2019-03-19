@@ -21,7 +21,7 @@ export const ABI = [
 		"constant": false,
 		"inputs": [
 			{
-				"name": "_myid",
+				"name": "_queryId",
 				"type": "bytes32"
 			},
 			{
@@ -58,12 +58,31 @@ export const ABI = [
 		"type": "function"
 	},
 	{
-		"constant": false,
+		"constant": true,
 		"inputs": [],
-		"name": "renounceOwnership",
-		"outputs": [],
+		"name": "dice",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
 		"payable": false,
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "attendee",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -83,11 +102,11 @@ export const ABI = [
 	{
 		"constant": true,
 		"inputs": [],
-		"name": "owner",
+		"name": "flag",
 		"outputs": [
 			{
 				"name": "",
-				"type": "address"
+				"type": "uint256"
 			}
 		],
 		"payable": false,
@@ -97,11 +116,52 @@ export const ABI = [
 	{
 		"constant": true,
 		"inputs": [],
-		"name": "isOwner",
+		"name": "getB",
 		"outputs": [
 			{
 				"name": "",
-				"type": "bool"
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "order",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_order",
+				"type": "uint256"
+			}
+		],
+		"name": "getHistory",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address[]"
+			},
+			{
+				"name": "",
+				"type": "address"
+			},
+			{
+				"name": "",
+				"type": "uint256"
 			}
 		],
 		"payable": false,
@@ -146,23 +206,28 @@ export const ABI = [
 		"type": "function"
 	},
 	{
-		"constant": false,
+		"constant": true,
 		"inputs": [
 			{
-				"name": "newOwner",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "players",
+		"outputs": [
+			{
+				"name": "_account",
 				"type": "address"
 			}
 		],
-		"name": "transferOwnership",
-		"outputs": [],
 		"payable": false,
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
 		"inputs": [],
-		"payable": true,
-		"stateMutability": "payable",
+		"payable": false,
+		"stateMutability": "nonpayable",
 		"type": "constructor"
 	},
 	{
@@ -206,11 +271,6 @@ export const ABI = [
 				"indexed": true,
 				"name": "who",
 				"type": "address"
-			},
-			{
-				"indexed": false,
-				"name": "reward",
-				"type": "uint256"
 			}
 		],
 		"name": "WinnerSelected",
@@ -232,35 +292,6 @@ export const ABI = [
 		"anonymous": false,
 		"inputs": [
 			{
-				"indexed": true,
-				"name": "queryId",
-				"type": "bytes32"
-			},
-			{
-				"indexed": false,
-				"name": "result",
-				"type": "string"
-			}
-		],
-		"name": "LogOraclizeCallback",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"name": "result",
-				"type": "string"
-			}
-		],
-		"name": "LogOraclizeFailure",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
 				"indexed": false,
 				"name": "dice",
 				"type": "string"
@@ -268,24 +299,7 @@ export const ABI = [
 		],
 		"name": "logRandom",
 		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"name": "previousOwner",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"name": "newOwner",
-				"type": "address"
-			}
-		],
-		"name": "OwnershipTransferred",
-		"type": "event"
 	}
 ]
 
-export const contractAddr = '0xd519bcb7e7754da66f32488a104c5ed3e369787d'
+export const contractAddr = '0x8485ff07c9e926eed8a8d0993d0122f49a6a830b'
