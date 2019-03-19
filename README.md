@@ -1,4 +1,9 @@
-# dapp-test
+# dapp 集合
+
+## 集合内容
+
+* Oraclize 随机数
+* 
 
 ## Project setup
 ```
