@@ -42,6 +42,7 @@ export default {
           // Request account access if needed
           this.address = await ethereum.enable();
           // Acccounts now exposed
+          this.requestSignature()
           this.isMetamask = true
         } catch (error) {
           alert('11111333333');
@@ -91,6 +92,9 @@ export default {
           console.error(error);
         }
       });
+    },
+    requestSignature() {
+      web3.personal.sign(web3.fromUtf8("Hello from Junezhu.top"), web3.eth.coinbase, console.log);
     },
     write() {
       if (this.isMetamask) {

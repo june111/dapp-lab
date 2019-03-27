@@ -69,14 +69,14 @@ export default {
     }
   },
   methods: {
-    getWeb3() {
+    async getWeb3() {
 
       // Modern dapp browsers...
       if (window.ethereum) {
         window.web3 = new Web3(ethereum);
         try {
           // Request account access if needed
-          ethereum.enable();
+          await ethereum.enable();
           // Acccounts now exposed
           this.isMetamask = true
 

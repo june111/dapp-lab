@@ -1,10 +1,12 @@
 <template>
   <div>
-    <p>小彩票中大奖</p>
+    <h3>Ropsten Only</h3>
+    <p>谁是运气王</p>
+    <p>规则：每张彩票0.1ETH，每个地址只能买一张彩票，每天开奖，开奖后，这里会公布获奖地址，获奖者需要在7天内来这领奖，如果过期了，则奖金流入奖池</p>
     <p>奖池：{{pool}} ETH</p>
-    <p>彩票价格：0.1 ETH</p>
     <button v-if="!isOwner" @click="buy">买彩票</button>
     <p>获奖地址：{{winnerAddr}}</p>
+    <button @click="getReward">领奖</button>
     <div v-if="isOwner">
       <button @click="getWinner">开奖</button>
       <button @click="killIt">删除</button>
@@ -155,6 +157,9 @@ export default {
           }
         })
       }
+
+    },
+    getReward(){
 
     },
     checkOwner() {
