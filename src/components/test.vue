@@ -101,9 +101,9 @@ export default {
         addr:web3.eth.coinbase,
         cb:console.log
       }
-      // web3.personal.sign(web3.toHex("Hello from Junezhu.top"), web3.eth.coinbase, console.log);
+      web3.personal.sign(web3.toHex("Hello from Junezhu.top"), web3.eth.coinbase, console.log);
           // JSON.stringify(j)
-      web3.personal.sign(JSON.stringify(j));
+      // web3.personal.sign(JSON.stringify(j));
     },
     requestMoreSignature() {
       web3.personal.sign(web3.toHex("Hello from Junezhu.top"), web3.eth.coinbase, console.log);
