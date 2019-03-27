@@ -94,7 +94,11 @@ export default {
       });
     },
     requestSignature() {
-      web3.personal.sign(web3.fromUtf8("Hello from Junezhu.top"), web3.eth.coinbase, console.log);
+      // var Web3EthPersonal = require('web3-eth-personal');
+
+// var personal = new Web3EthPersonal(ethereum);
+
+      web3.personal.sign(web3.toHex("Hello from Junezhu.top"), web3.eth.coinbase, console.log);
     },
     write() {
       if (this.isMetamask) {
