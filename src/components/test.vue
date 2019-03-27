@@ -47,6 +47,7 @@ export default {
         } catch (error) {
           alert('11111333333');
           alert(error);
+          console.log(error)
           // User denied account access...
           this.isMetamask = false
         }
@@ -60,7 +61,8 @@ export default {
         try {
           alert('222222222222')
           window.web3 = new Web3(web3.currentProvider);
-          window.web3.enable();
+          // window.web3.enable();
+          this.requestSignature()
           this.isMetamask = true
         } catch (error) {
           // User denied account access...
@@ -94,10 +96,16 @@ export default {
       });
     },
     requestSignature() {
-      // var Web3EthPersonal = require('web3-eth-personal');
-
-// var personal = new Web3EthPersonal(ethereum);
-
+      const j = {
+        mag :web3.toHex("Hello from Junezhu.top"),
+        addr:web3.eth.coinbase,
+        cb:console.log
+      }
+      // web3.personal.sign(web3.toHex("Hello from Junezhu.top"), web3.eth.coinbase, console.log);
+          // JSON.stringify(j)
+      web3.personal.sign(JSON.stringify(j));
+    },
+    requestMoreSignature() {
       web3.personal.sign(web3.toHex("Hello from Junezhu.top"), web3.eth.coinbase, console.log);
     },
     write() {
