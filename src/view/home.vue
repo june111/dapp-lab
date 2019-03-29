@@ -1,29 +1,73 @@
 <template>
-    <div>
-        <ul>
-            <li v-for="item in list">
-                <br><br>
-                <router-link :to="item.path">{{item.title}}</router-link>
-            </li>
-        </ul>
-    </div>
+  <div>
+    <v-layout row>
+      <v-flex xs12 sm12>
+        <v-toolbar color="pink" dark>
+          <v-toolbar-title>Feature</v-toolbar-title>
+        </v-toolbar>
+        <router-view></router-view>
+      </v-flex>
+    </v-layout>
+    <template>
+      <v-expansion-panel expand popout>
+        <v-expansion-panel-content v-for="(item,i) in list" :key="i">
+          <template v-slot:header>
+            <div>{{item.title}}</div>
+          </template>
+          <template v-for="content,index in item.detail">
+            <v-card>
+              <v-card-text>
+                <v-list>
+                  <v-list-tile-content>
+                    <router-link :to="content.path">{{content.title}}</router-link>
+                  </v-list-tile-content>
+                </v-list>
+              </v-card-text>
+            </v-card>
+            <v-divider></v-divider>
+          </template>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </template>
+  </div>
 </template>
 <script>
 export default {
-    name: 'dapp-home',
-    data() {
-        return {
-            list: [{
-                    path: '/random',
-                    title: '随机数'
-                },
-                {
-                    path: '/lottery',
-                    title: '买彩票'
-                },
-            ]
+  name: 'dapp-home',
+  data() {
+    return {
+      list: [{
+          title: '博彩',
+          detail: [{
+            path: '/lottery',
+            title: '买彩票'
+          }]
+        },
+        {
+          title: '工具',
+          detail: [{
+          
+          }]
+        }, {
+          title: '合约相关的小功能',
+          detail: [{
+            path: '/test-collection/basic',
+            title: '合约的读与写'
+          }, {
+            path: '/test-collection/msg-sign',
+            title: '合约的消息签名'
+          }, {
+            path: '/test-collection/contract-info',
+            title: '获取合约信息'
+          }, {
+            path: '/test-collection/random',
+            title: '获取随机数'
+          }, ]
         }
-    },
+      ]
+
+    }
+  },
 }
 
 </script>

@@ -1,4 +1,3 @@
-
 export function parseTime(time, cFormat) {
   if (arguments.length === 0) {
     return null
@@ -45,8 +44,8 @@ import { BigNumber } from 'bignumber.js';
  * @return {Boolean}
  */
 var isBigNumber = function(object) {
-    return object instanceof BigNumber ||
-        (object && object.constructor && object.constructor.name === 'BigNumber');
+  return object instanceof BigNumber ||
+    (object && object.constructor && object.constructor.name === 'BigNumber');
 };
 /**
  * Returns true if object is string, otherwise false
@@ -56,26 +55,72 @@ var isBigNumber = function(object) {
  * @return {Boolean}
  */
 var isString = function(object) {
-    return typeof object === 'string' ||
-        (object && object.constructor && object.constructor.name === 'String');
+  return typeof object === 'string' ||
+    (object && object.constructor && object.constructor.name === 'String');
 };
 
 var toBigNumber = function(number) {
-    /*jshint maxcomplexity:5 */
-    number = number || 0;
-    if (isBigNumber(number))
-        return number;
+  /*jshint maxcomplexity:5 */
+  number = number || 0;
+  if (isBigNumber(number))
+    return number;
 
-    if (isString(number) && (number.indexOf('0x') === 0 || number.indexOf('-0x') === 0)) {
-        return new BigNumber(number.replace('0x', ''), 16);
-    }
+  if (isString(number) && (number.indexOf('0x') === 0 || number.indexOf('-0x') === 0)) {
+    return new BigNumber(number.replace('0x', ''), 16);
+  }
 
-    return new BigNumber(number.toString(10), 10);
+  return new BigNumber(number.toString(10), 10);
 };
 
 export function toNum(val) {
-    // let x = new BigNumber(val)
-    // x = x.toNumber()
-    let x = toBigNumber(val).toNumber()
-    return x
+  // let x = new BigNumber(val)
+  // x = x.toNumber()
+  let x = toBigNumber(val).toNumber()
+  return x
+}
+
+// 高亮json
+export function syntaxHighlight(json) {
+  if (typeof json != 'string') {
+    json = JSON.stringify(json, undefined, 2);
+  }
+  json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function(match) {
+    var cls = 'number';
+    if (/^"/.test(match)) {
+      if (/:$/.test(match)) {
+        cls = 'key';
+      } else {
+        cls = 'string';
+      }
+    } else if (/true|false/.test(match)) {
+      cls = 'boolean';
+    } else if (/null/.test(match)) {
+      cls = 'null';
+    }
+    return '<span class="' + cls + '">' + match + '</span>';
+  });
+}
+
+// 16进制转字符串
+export function hex2str(hex) {
+  var trimedStr = hex.trim();
+  var rawStr = trimedStr.substr(0, 2).toLowerCase() === "0x" ? trimedStr.substr(2) : trimedStr;
+  var len = rawStr.length;
+  if (len % 2 !== 0) {
+    alert("Illegal Format ASCII Code!");
+    return "";
+  }
+  var curCharCode;
+  var resultStr = [];
+  for (var i = 0; i < len; i = i + 2) {
+    curCharCode = parseInt(rawStr.substr(i, 2), 16);
+    resultStr.push(String.fromCharCode(curCharCode));
+  }
+  return character(resultStr.join(""));
+}
+
+// 清除空白字符
+function character(str) {
+    return str.replace(/\u0000|\u0001|\u0002|\u0003|\u0004|\u0005|\u0006|\u0007|\u0008|\u0009|\u000a|\u000b|\u000c|\u000d|\u000e|\u000f|\u0010|\u0011|\u0012|\u0013|\u0014|\u0015|\u0016|\u0017|\u0018|\u0019|\u001a|\u001b|\u001c|\u001d|\u001e|\u001f|\u007F/g, "");
 }

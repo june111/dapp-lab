@@ -1,37 +1,59 @@
 <template>
-  <div class="RNG">
-    <h3>Ropsten Only</h3>
-    <p>Get random number between 1 and 6 from API</p>
-    <img v-if="getApiRadNumPending" class="loader" src="https://loading.io/spinners/double-ring/lg.double-ring-spinner.gif" />
-    <button v-else @click="getApiRadNum">Generate</button>
-    <p>Random Number: {{luckyNum}}</p>
-    <p>{{luckyNumTime}}</p>
-    <br>
-    <p>Get random number between 0 and 100 from Oraclize's random</p>
-    <img v-if="getOraRadNumPending" class="loader" src="https://loading.io/spinners/double-ring/lg.double-ring-spinner.gif" />
-    <button v-else @click="getOraRadNum">Generate</button>
-    <p>Random Number: {{oraRadNum}}</p>
-    <p>{{oraRadNumTime}}</p>
-    <br>
-    <p>Get random number between 0 and 100 from Oraclize's WolframAlpha</p>
-    <img v-if="getWolNumPending" class="loader" src="https://loading.io/spinners/double-ring/lg.double-ring-spinner.gif" />
-    <button v-else @click="getWolNum">Generate</button>
-    <p>Random Number: {{wolNum}}</p>
-    <p>{{wolNumTime}}</p>
+  <div>
+    <v-card>
+      <v-card-title primary-title>
+        <div class="center"> 
+          <h3 class="headline mb-0">Ropsten Only</h3>
+        </div>
+      </v-card-title>
+    </v-card>
+    <v-card>
+      <v-card-title primary-title  >
+        <div class="center">
+          <h3 class="mb-0">Get random number between 1 and 6 from API</h3>
+          <img v-if="getApiRadNumPending" class="loader" src="https://loading.io/spinners/double-ring/lg.double-ring-spinner.gif" />
+          <v-btn v-else color="blue" dark @click="getApiRadNum">Generate</v-btn>
+          <p>Random Number: {{luckyNum}}</p>
+          <p>{{luckyNumTime}}</p>
+        </div>
+      </v-card-title>
+    </v-card>
+    <v-card>
+      <v-card-title primary-title>
+        <div class="center">
+          <h3 class="mb-0">Get random number between 0 and 100 from Oraclize's random</h3>
+          <img v-if="getOraRadNumPending" class="loader" src="https://loading.io/spinners/double-ring/lg.double-ring-spinner.gif" />
+          <v-btn v-else color="blue" dark @click="getOraRadNum">Generate</v-btn>
+          <p>Random Number: {{oraRadNum}}</p>
+          <p>{{oraRadNumTime}}</p>
+        </div>
+      </v-card-title>
+    </v-card>
+    <v-card>
+      <v-card-title primary-title>
+        <div class="center">
+          <h3 class="mb-0">Get random number between 0 and 100 from Oraclize's WolframAlpha</h3>
+          <img v-if="getWolNumPending" class="loader" src="https://loading.io/spinners/double-ring/lg.double-ring-spinner.gif" />
+          <v-btn v-else color="blue" dark @click="getWolNum">Generate</v-btn>
+          <p>Random Number: {{wolNum}}</p>
+          <p>{{wolNumTime}}</p>
+        </div>
+      </v-card-title>
+    </v-card>
   </div>
 </template>
 <script>
 import Web3 from 'web3'
-import { parseTime } from '../util'
-import { ABI, contractAddr } from '../contract/OraclizeAPI/abi'
+import { parseTime } from '../../util'
+import { ABI, contractAddr } from '../../contract/OraclizeAPI/abi'
 import {
   randomABI,
   randomContractAddr
-} from '../contract/OraclizeRandom/abi'
+} from '../../contract/OraclizeRandom/abi'
 import {
   wolABI,
   wolContractAddr
-} from '../contract/WolframAlpha/abi'
+} from '../../contract/WolframAlpha/abi'
 export default {
   created() {
     this.getWeb3()
@@ -247,12 +269,11 @@ export default {
 }
 
 </script>
-<style>
-.RNG {
-  margin: 8vh auto;
-  text-align: center;
+<style scoped>
+.center{
+      margin: 0px auto;
+    text-align: center;
 }
-
 .loader {
   display: block;
   width: 30px;
