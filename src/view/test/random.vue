@@ -13,7 +13,7 @@
           <h3 class="mb-0">Get random number between 1 and 6 from API</h3>
           <img v-if="getApiRadNumPending" class="loader" src="https://loading.io/spinners/double-ring/lg.double-ring-spinner.gif" />
           <v-btn v-else color="blue" dark @click="getApiRadNum">Generate</v-btn>
-          <p>Random Number: {{luckyNum}}</p>
+          <p v-if="luckyNum">Random Number: {{luckyNum}}</p>
           <p>{{luckyNumTime}}</p>
         </div>
       </v-card-title>
@@ -24,7 +24,7 @@
           <h3 class="mb-0">Get random number between 0 and 100 from Oraclize's random</h3>
           <img v-if="getOraRadNumPending" class="loader" src="https://loading.io/spinners/double-ring/lg.double-ring-spinner.gif" />
           <v-btn v-else color="blue" dark @click="getOraRadNum">Generate</v-btn>
-          <p>Random Number: {{oraRadNum}}</p>
+          <p v-if="oraRadNum">Random Number: {{oraRadNum}}</p>
           <p>{{oraRadNumTime}}</p>
         </div>
       </v-card-title>
@@ -35,7 +35,7 @@
           <h3 class="mb-0">Get random number between 0 and 100 from Oraclize's WolframAlpha</h3>
           <img v-if="getWolNumPending" class="loader" src="https://loading.io/spinners/double-ring/lg.double-ring-spinner.gif" />
           <v-btn v-else color="blue" dark @click="getWolNum">Generate</v-btn>
-          <p>Random Number: {{wolNum}}</p>
+          <p v-if="wolNum">Random Number: {{wolNum}}</p>
           <p>{{wolNumTime}}</p>
         </div>
       </v-card-title>
@@ -69,19 +69,19 @@ export default {
       //实例化合约
       RNGContract: undefined,
       RNG: undefined, // 合约实例
-      luckyNum: 'empty',
+      luckyNum: '',
       luckyNumTime: '',
       getApiRadNumPending: false,
 
       randomContract: undefined,
       oraRandom: undefined, // 合约实例
-      oraRadNum: 'empty',
+      oraRadNum: '',
       oraRadNumTime: '',
       getOraRadNumPending: false,
 
       wolContract: undefined,
       wolRandom: undefined, // 合约实例
-      wolNum: 'empty',
+      wolNum: '',
       wolNumTime: '',
       getWolNumPending: false,
 
@@ -144,7 +144,7 @@ export default {
 
     },
     getApiRadNum() {
-      this.luckyNum = 'empty'
+      this.luckyNum = ''
       this.getApiRadNumPending = true
 
       if (this.isMetamask) {
@@ -188,7 +188,7 @@ export default {
     },
 
     getOraRadNum() {
-      this.oraRadNum = 'empty'
+      this.oraRadNum = ''
       this.getOraRadNumPending = true
       if (this.isMetamask) {
         // console.log('eth', window.web3.eth)
@@ -223,7 +223,7 @@ export default {
     },
 
     getWolNum() {
-      this.wolNum = 'empty'
+      this.wolNum = ''
       this.getWolNumPending = true
       if (this.isMetamask) {
         // console.log('eth', window.web3.eth)
