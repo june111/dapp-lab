@@ -44,11 +44,6 @@ export default {
           }]
         },
         {
-          title: '工具',
-          detail: [{
-          
-          }]
-        }, {
           title: '合约相关的小功能',
           detail: [{
             path: '/test-collection/basic',

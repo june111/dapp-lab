@@ -86,8 +86,6 @@ export default {
       getWolNumPending: false,
 
       myAddress: '',
-
-
     }
   },
   methods: {

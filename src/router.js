@@ -9,7 +9,7 @@ export default new Router({
   routes: [{
     path: '/',
     component: () => import('./view/home.vue')
-  },  {
+  }, {
     path: '/lottery',
     component: () => import('./components/lottery.vue')
   }, {
@@ -34,10 +34,10 @@ export default new Router({
     }, {
       path: 'contract-info',
       component: () => import('./view/test/contractinfo.vue'),
-    },{
-    path: '/random',
-    component: () => import('./view/test/random.vue')
-  },]
+    }, {
+      path: 'random',
+      component: () => import('./view/test/random.vue')
+    }, ]
   }, {
     path: '*',
     component: () => import('./view/404.vue')
