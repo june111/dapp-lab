@@ -10,8 +10,8 @@ export default new Router({
     path: '/',
     component: () => import('./view/home.vue')
   }, {
-    path: '/lottery',
-    component: () => import('./components/lottery.vue')
+    path: '/dice',
+    component: () => import('./view/dice.vue')
   }, {
     path: '/record',
     component: () => import('./components/record.vue')

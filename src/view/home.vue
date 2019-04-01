@@ -39,8 +39,8 @@ export default {
       list: [{
           title: '博彩',
           detail: [{
-            path: '/lottery',
-            title: '买彩票'
+            path: '/dice',
+            title: '猜数字'
           }]
         },
         {
