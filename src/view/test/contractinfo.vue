@@ -14,10 +14,10 @@
     </v-card-title>
     <v-container grid-list-md text-xs-center>
       <v-layout row>
-        <v-flex xs7 sm10>
+        <v-flex xs6 sm10>
           <v-text-field v-model="address" label="address"></v-text-field>
         </v-flex>
-        <v-flex xs2 sm2>
+        <v-flex xs6 sm2>
           <v-btn color="blue" dark @click="checkAPI">查询合约信息</v-btn>
         </v-flex>
       </v-layout>
@@ -33,10 +33,10 @@
     </v-card-title>
     <v-container grid-list-md text-xs-center>
       <v-layout row>
-        <v-flex xs7 sm10>
+        <v-flex xs6 sm10>
           <v-text-field v-model="contractAddr" label="address"></v-text-field>
         </v-flex>
-        <v-flex xs2 sm2>
+        <v-flex xs6 sm2>
           <v-btn color="blue" dark @click="checkContract">查询合约信息</v-btn>
         </v-flex>
       </v-layout>

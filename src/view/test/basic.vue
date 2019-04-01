@@ -3,7 +3,7 @@
     <v-card>
       <v-card-text>
         <v-btn color="blue" dark @click="load">读取合约余额</v-btn>
-        <span>合约余额：{{contractBalance}}</span>
+        <span v-if="contractBalance">合约余额：{{contractBalance}}</span>
       </v-card-text>
       <v-divider></v-divider>
       <v-container grid-list-md text-xs-center>

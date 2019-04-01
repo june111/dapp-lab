@@ -10,14 +10,14 @@
     </v-card-text>
     <v-divider></v-divider>
     <v-container grid-list-md text-xs-center>
-      <v-layout row>
-        <v-flex xs4 sm5>
+      <v-layout row wrap>
+        <v-flex xs6 sm4>
           <v-text-field v-model="name" label="name"></v-text-field>
         </v-flex>
-        <v-flex xs4 sm5>
+        <v-flex xs6 sm5>
           <v-text-field v-model="email" label="email"></v-text-field>
         </v-flex>
-        <v-flex xs4 sm2>
+        <v-flex xs12 sm3>
           <v-btn color="blue" dark @click="requestMoreSignature">多行信息签名</v-btn>
         </v-flex>
       </v-layout>
