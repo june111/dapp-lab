@@ -17,7 +17,7 @@
         </v-layout>
       </v-container>
       <v-card-text v-if="tx">
-        <p>TxHash：{{tx}}</p>
+        <p style="word-break: break-all;">TxHash：{{tx}}</p>
       </v-card-text>
     </v-card>
   </div>

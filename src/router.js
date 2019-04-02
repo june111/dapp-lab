@@ -40,6 +40,9 @@ export default new Router({
     }, {
       path: 'get-data-code',
       component: () => import('./view/test/get-data-code.vue')
+    }, {
+      path: 'send-raw-transaction',
+      component: () => import('./view/test/send-raw-transaction.vue')
     },]
   }, {
     path: '*',

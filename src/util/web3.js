@@ -42,9 +42,23 @@ export function getGasPrice() {
 // gas Limit
 export function estimateGas(rawTx) {
   return new Promise((resolve, reject) => {
-   window.web3.eth.estimateGas(rawTx,(error, result) => {
+    window.web3.eth.estimateGas(rawTx, (error, result) => {
       if (!error) {
         resolve(result)
+      } else {
+        console.error(error);
+      }
+    })
+  })
+}
+
+// get nonce
+export function getNonce(addr) {
+  return new Promise((resolve, reject) => {
+    window.web3.eth.getTransactionCount(addr, (error, result) => {
+      if (!error) {
+        // let nonce = '0x' + result.toString(16)
+        resolve(toNum(result))
       } else {
         console.error(error);
       }

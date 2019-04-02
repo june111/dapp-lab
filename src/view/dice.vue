@@ -255,20 +255,7 @@ export default {
       }
 
     },
-    getNonce() {
-      return new Promise((resolve, reject) => {
-        window.web3.eth.getTransactionCount(this.myAddress, (error, result) => {
-          if (!error) {
-            let nonce = '0x' + result.toString(16)
-            resolve(nonce)
-          } else {
-            console.error(error);
 
-          }
-        })
-
-      })
-    },
     checkNetwork() {
       this.showEnv ? this.showEnv = false : this.showEnv = true
     },
