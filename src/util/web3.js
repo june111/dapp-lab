@@ -40,12 +40,16 @@ export function getGasPrice() {
 }
 
 // gas Limit
-export function estimateGas(_to, _data) {
-  return web3.eth.estimateGas({
-    to: _to,
-    data: _data
+export function estimateGas(rawTx) {
+  return new Promise((resolve, reject) => {
+   window.web3.eth.estimateGas(rawTx,(error, result) => {
+      if (!error) {
+        resolve(result)
+      } else {
+        console.error(error);
+      }
+    })
   })
-
 }
 
 export function getBlockNumber() {

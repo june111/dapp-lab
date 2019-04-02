@@ -37,7 +37,10 @@ export default new Router({
     }, {
       path: 'random',
       component: () => import('./view/test/random.vue')
-    }, ]
+    }, {
+      path: 'get-data-code',
+      component: () => import('./view/test/get-data-code.vue')
+    },]
   }, {
     path: '*',
     component: () => import('./view/404.vue')

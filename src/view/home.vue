@@ -57,7 +57,10 @@ export default {
           }, {
             path: '/test-collection/random',
             title: '获取随机数'
-          }, ]
+          }, {
+            path: '/test-collection/get-data-code',
+            title: '从web3获取发送交易所需的参数'
+          },]
         }
       ]
 

@@ -72,7 +72,7 @@ import abi from 'ethereumjs-abi'
 import EthereumTx from 'ethereumjs-tx'
 import { toNum } from '../util'
 import { ABI, contractAddr } from '../contract/dice/abi'
-
+import { estimateGas } from '../util/web3'
 export default {
   created() {
     this.getWeb3()
@@ -200,7 +200,20 @@ export default {
           console.error(error);
       });
     },
-    clickNumber(number, event) {
+
+    async clickNumber(number, event) {
+
+      var encoded = '0x' + abi.simpleEncode("bet(uint256)", number).toString('hex')
+      let rawTx = {
+        gasPrice: window.web3.toWei('0.00000001', 'ether'), // 10 Gwei
+        value: window.web3.toWei(this.amount, 'ether'),
+        from: window.web3.eth.coinbase,
+        data:encoded,
+        to:this.contractAddr
+      }
+      let gas = await estimateGas(rawTx)
+      rawTx.gas = gas
+      
       this.chooseNum = number
       this.isChooseNum = true
       let pay = this.amount * this.odds
@@ -210,12 +223,7 @@ export default {
         this.winEvent = null
         this.pending = true
         if (this.isMetamask) {
-          this.casino.bet(number, {
-            gas: 300000, //Gas Limit 300000
-            gasPrice: window.web3.toWei('0.000000001', 'ether'), // 1 Gwei
-            value: window.web3.toWei(this.amount, 'ether'),
-            from: window.web3.eth.coinbase
-          }, (err, result, data) => {
+          this.casino.bet(number, rawTx, (err, result, data) => {
             if (err) {
               this.pending = false
               console.error(err)
