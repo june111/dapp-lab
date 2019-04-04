@@ -62,8 +62,8 @@ export default {
             title: '从web3获取发送交易所需的参数'
           },{
             path: '/test-collection/send-raw-transaction',
-            title: '直接用私钥发送交易'
-          },]
+            title: '用私钥发送交易'
+          }]
         }
       ]
 
