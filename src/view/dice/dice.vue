@@ -70,9 +70,9 @@
 import Web3 from 'web3'
 import abi from 'ethereumjs-abi'
 import EthereumTx from 'ethereumjs-tx'
-import { toNum } from '../util'
-import { ABI, contractAddr } from '../contract/dice/abi'
-import { estimateGas } from '../util/web3'
+import { toNum } from '../../util'
+import { ABI, contractAddr } from '../../contract/dice/abi'
+import { estimateGas } from '../../util/web3'
 export default {
   created() {
     this.getWeb3()
