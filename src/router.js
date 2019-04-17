@@ -5,13 +5,13 @@ Vue.use(Router)
 
 export default new Router({
   // mode: 'history',
-  base: 'dapp-fun-test/',
+  base: 'dapp-lab/',
   routes: [{
     path: '/',
     component: () => import('./view/home.vue')
   }, {
     path: '/dice',
-    component: () => import('./view/dice.vue')
+    component: () => import('./view/dice/dice.vue')
   }, {
     path: '/record',
     component: () => import('./components/record.vue')

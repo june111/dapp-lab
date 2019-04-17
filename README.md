@@ -1,40 +1,44 @@
-# dapp 集合
+# DApp Lab
 
-## 集合内容
+English | [简体中文](./README.zh-CN.md)
 
-* dapp
-	* 猜数字
-	
-* 合约与web3的交互功能
-	* 合约的读与写
-	* 合约的消息签名
-	* 获取合约信息的方法
-	* 从web3获取发送交易所需的参数
-	* 直接用私钥发送交易
+## Introduction
 
-## Project setup
-```
+Some simple examples of DApp and examples of DApp interacting with web3.
+
+Live version available at [http://blog.junezhu.top/dapp-lab/](http://blog.junezhu.top/dapp-lab/)
+
+## Catalog
+
+* DApp
+	*  Dice (Guesses the number from 1 to 10)
+
+* Interactive function between smart contract and web3
+	* Reading and writing in smart contracts
+	* Message signing for smart contracts
+	* How to get smart contract information
+	* Get the parameters needed to send a transaction from web3
+	* Send transactions directly with the private key
+
+## Author
+
+**June** -> [email](mailto:ru-q-ur@163.com)
+
+## Getting started
+```bash
+# Installing
 npm install
-```
-
-### Compiles and hot-reloads for development
-```
+# Compiles and hot-reloads for development
 npm run dev
 ```
 
-### Compiles and minifies for production
-```
+App will be running at: http://localhost:8080/dapp-lab/
+
+## Build 
+```bash
 npm run build
 ```
 
-### Run your tests
-```
-npm run test
-```
+## License
 
-### Lints and fixes files
-```
-npm run lint
-```
-
-[线上版本](http://blog.junezhu.top/dapp-fun-test/)
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
