@@ -19,7 +19,8 @@ function getEntry(globPath) {
       entry: 'src/' + tmp[0] + '/' + tmp[1] + '/' + tmp[1] + '.js',
       template: 'src/' + tmp[0] + '/' + tmp[1] + '/' + tmp[2],
       title: tmp[2],
-      filename: tmp[2]
+      filename: tmp[2],
+      favicon:'src/static/favicon.ico'
     };
   });
   return entries;
@@ -84,19 +85,8 @@ module.exports = {
       .set('utils', resolve('src/utils'))
       .set('contracts', resolve('src/contracts'));
 
-    // if (process.env.NODE_ENV === "production") {
-    //   config.plugin("extract-css").tap(() => [{
-    //     path: path.join(__dirname, "./dist"),
-    //     filename: "css/[name].[contenthash:8].css"
-    //   }]);
-    // }
   },
   configureWebpack: config => {
-    // if (process.env.NODE_ENV === "production") {
-    //   config.output = {
-    //     path: path.join(__dirname, "./dist"),
-    //     filename: "js/[name].[contenthash:8].js"
-    //   };
-    // }
+
   }
 }
