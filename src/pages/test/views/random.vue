@@ -44,16 +44,16 @@
 </template>
 <script>
 import Web3 from 'web3'
-import { parseTime } from '../../util'
-import { ABI, contractAddr } from '../../contract/OraclizeAPI/abi'
+import { parseTime } from 'utils'
+import { ABI, contractAddr } from 'contracts/OraclizeAPI/abi'
 import {
   randomABI,
   randomContractAddr
-} from '../../contract/OraclizeRandom/abi'
+} from 'contracts/OraclizeRandom/abi'
 import {
   wolABI,
   wolContractAddr
-} from '../../contract/WolframAlpha/abi'
+} from 'contracts/WolframAlpha/abi'
 export default {
   created() {
     this.getWeb3()

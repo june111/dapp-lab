@@ -1,13 +1,11 @@
 <template>
   <div>
     <v-card>
-      <v-card-text>
-        <v-btn color="blue" dark @click="load">读取合约余额</v-btn>
-        <span v-if="contractBalance">合约余额：{{contractBalance}}</span>
-      </v-card-text>
-      <v-divider></v-divider>
+      <v-card-title primary-title>
+        <h3 class="headline mb-0">用 abi 获取 data</h3>
+      </v-card-title>
       <v-container grid-list-md text-xs-center>
-        <v-layout row>
+        <v-layout row wrap>
           <v-flex xs7 sm10>
             <v-text-field v-model="amount" label="amount"></v-text-field>
           </v-flex>
@@ -24,8 +22,14 @@
 </template>
 <script>
 import Web3 from 'web3'
-import { ABI, contractAddr } from '../../contract/info'
-import { toNum } from '../../util'
+import abi from 'ethereumjs-abi'
+
+import { ABI, contractAddr } from 'contracts/info'
+import { toNum } from 'utils'
+import {
+  getGasPrice,
+  estimateGas
+} from 'utils/web3'
 
 export default {
   created() {
@@ -39,7 +43,6 @@ export default {
       casinoContract: undefined,
       casino: undefined,
       tx: '',
-      contractBalance: '',
 
       address: '',
 
@@ -47,7 +50,6 @@ export default {
   },
   methods: {
     async getWeb3() {
-
       // Modern dapp browsers...
       if (window.ethereum) {
         window.web3 = new Web3(ethereum);
@@ -86,25 +88,36 @@ export default {
       this.casino = this.casinoContract.at(contractAddr);
       console.log('Set Contract!')
     },
-    load() {
-      console.log(contractAddr)
-      window.web3.eth.getBalance(contractAddr, (error, result) => {
-        if (!error) {
-          this.contractBalance = toNum(result) / Math.pow(10, 18);
-        } else {
-          console.error(error);
-        }
-      });
-    },
+    async write() {
 
-    write() {
       if (this.isMetamask) {
-        this.casino.bet(1, {
-          gas: 300000, //Gas Limit 300000
-          gasPrice: window.web3.toWei('0.000000001', 'ether'), // 1 Gwei
+        let gasPrice = await getGasPrice()
+        let encoded = '0x' + abi.simpleEncode('bet(uint256)', 1).toString('hex')
+
+        // 多个变量 
+        // inputsTypeA, inputsTypeB是abi中inputs的type，多个用逗号隔开
+        // outputsTypeA, outputsTypeB是abi中outputs的type，多个用逗号隔开
+        // inputParameterA, inputParameterB是要传过去的参数，多个用逗号隔开
+        // const encoded = '0x' + abi.simpleEncode("functionName(inputsTypeA, inputsTypeB):(outputsTypeA, outputsTypeB)", inputParameterA, inputParameterB).toString('hex')
+        // 
+        // 没有返回，即abi中这个function的outputs为空
+        // const encoded = '0x' + abi.simpleEncode("functionName(inputsTypeA)", inputParameterA).toString('hex')
+        // 
+        // 没有入参
+        // const encoded = '0x' + abi.methodID('functionName', []).toString('hex')
+
+
+        let rawTx = {
+          gasPrice: gasPrice,
           value: window.web3.toWei(this.amount, 'ether'),
-          from: window.web3.eth.coinbase
-        }, (err, result, data) => {
+          from: this.address[0],
+          data: encoded,
+          to: contractAddr
+        }
+        let gas = await estimateGas(rawTx)
+        rawTx.gas = gas
+
+        this.casino.bet(1, rawTx, (err, result, data) => {
           if (err) {
             console.error(err)
           } else {

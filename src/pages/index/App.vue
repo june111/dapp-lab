@@ -5,7 +5,7 @@
         <v-toolbar color="pink" dark>
           <v-toolbar-title>Feature</v-toolbar-title>
         </v-toolbar>
-        <router-view></router-view>
+        <!-- <router-view></router-view> -->
       </v-flex>
     </v-layout>
     <template>
@@ -19,7 +19,7 @@
               <v-card-text>
                 <v-list>
                   <v-list-tile-content>
-                    <router-link :to="content.path">{{content.title}}</router-link>
+                    <a :href="content.path">{{content.title}}</a>
                   </v-list-tile-content>
                 </v-list>
               </v-card-text>
@@ -32,36 +32,37 @@
   </div>
 </template>
 <script>
+const baseUrl = '/dapp-lab'
 export default {
-  name: 'dapp-home',
+  name: 'home',
   data() {
     return {
       list: [{
           title: 'Gambling',
           detail: [{
-            path: '/dice',
+            path: baseUrl + '/dice.html',
             title: 'Dice'
           }]
         },
         {
           title: 'Interactive function between smart contract and web3',
           detail: [{
-            path: '/test-collection/basic',
+            path: baseUrl + '/test.html#/test-collection/basic',
             title: 'Smart contract read and write'
           }, {
-            path: '/test-collection/msg-sign',
+            path: baseUrl + '/test.html#/test-collection/msg-sign',
             title: '合约的消息签名'
           }, {
-            path: '/test-collection/contract-info',
+            path: baseUrl + '/test.html#/test-collection/contract-info',
             title: 'Get information about a specified smart contract'
           }, {
-            path: '/test-collection/random',
+            path: baseUrl + '/test.html#/test-collection/random',
             title: 'Get random number'
           }, {
-            path: '/test-collection/get-data-code',
+            path: baseUrl + '/test.html#/test-collection/get-data-code',
             title: 'Compile data by abi'
-          },{
-            path: '/test-collection/send-raw-transaction',
+          }, {
+            path: baseUrl + '/test.html#/test-collection/send-raw-transaction',
             title: 'Sign transactions with the private key'
           }]
         }

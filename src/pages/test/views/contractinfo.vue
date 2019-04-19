@@ -48,7 +48,7 @@
 </template>
 <script type="text/javascript">
 import Web3 from 'web3'
-import { toNum, syntaxHighlight, hex2str } from '../../util'
+import { toNum, syntaxHighlight, hex2str } from 'utils'
 
 export default {
   data() {

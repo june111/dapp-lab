@@ -30,7 +30,7 @@
 </template>
 <script>
 import Web3 from 'web3'
-import { toNum } from '../../util'
+import { toNum } from 'utils'
 
 var sigUtil = require('eth-sig-util')
 var ethUtil = require('ethereumjs-util')

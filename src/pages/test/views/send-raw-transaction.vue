@@ -25,13 +25,13 @@ import Web3 from 'web3'
 import abi from 'ethereumjs-abi'
 import EthereumTx from 'ethereumjs-tx'
 
-import { ABI, contractAddr } from '../../contract/info'
-import { toNum } from '../../util'
+import { ABI, contractAddr } from 'contracts/info'
+import { toNum } from 'utils'
 import {
   getGasPrice,
   estimateGas,
   getNonce
-} from '../../util/web3'
+} from 'utils/web3'
 
 export default {
   created() {
