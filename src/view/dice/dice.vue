@@ -87,8 +87,6 @@ export default {
         this.getAccount()
       }, 1000)
     })
-
-
   },
   data() {
     return {

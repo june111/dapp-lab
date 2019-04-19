@@ -37,32 +37,32 @@ export default {
   data() {
     return {
       list: [{
-          title: '博彩',
+          title: 'Gambling',
           detail: [{
             path: '/dice',
-            title: '猜数字'
+            title: 'Dice'
           }]
         },
         {
-          title: '合约相关的小功能',
+          title: 'Interactive function between smart contract and web3',
           detail: [{
             path: '/test-collection/basic',
-            title: '合约的读与写'
+            title: 'Smart contract read and write'
           }, {
             path: '/test-collection/msg-sign',
             title: '合约的消息签名'
           }, {
             path: '/test-collection/contract-info',
-            title: '获取合约信息'
+            title: 'Get information about a specified smart contract'
           }, {
             path: '/test-collection/random',
-            title: '获取随机数'
+            title: 'Get random number'
           }, {
             path: '/test-collection/get-data-code',
-            title: '从web3获取发送交易所需的参数'
+            title: 'Compile data by abi'
           },{
             path: '/test-collection/send-raw-transaction',
-            title: '用私钥发送交易'
+            title: 'Sign transactions with the private key'
           }]
         }
       ]
