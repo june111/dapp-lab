@@ -4,7 +4,7 @@ This is a Dapp demo that guesses the number. After the bet, select a number in 1
 
 Because MetaMask is used for transaction signing, please install MetaMask before using it. The demo is only deployed on the Ropsten test network. Please confirm that the current network of MetaMask is Ropsten before use.
 
-Live version available at [http://blog.junezhu.top/vue-dapp-demo/](http://blog.junezhu.top/vue-dapp-demo/)
+Live version available at [http://blog.junezhu.top/dapp-lab/dice.html](http://blog.junezhu.top/dapp-lab/dice.html)
 
 Demo tutorial available at [Getting started with DAPP](https://blog.junezhu.top/2018/07/07/getting-started-dAPP-see-this-is-enough.html)
 

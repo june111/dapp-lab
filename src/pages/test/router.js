@@ -4,25 +4,15 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 export default new Router({
-  // mode: 'history',
   base: 'dapp-lab/',
   routes: [
   // {
-  //   path: '/',
-  //   component: () => import('./views/home.vue')
-  // }, {
-  //   path: '/dice',
-  //   component: () => import('./views/dice/dice.vue')
-  // }, {
   //   path: '/record',
   //   component: () => import('./components/record.vue')
   // }, {
   //   path: '/random-b',
   //   component: () => import('./components/random-b.vue')
-  // }, {
-  //   path: '/test',
-  //   component: () => import('./components/test.vue')
-  // }, 
+  // },
   {
     path: '/test-collection',
     component: () => import('./views/layout.vue'),
@@ -48,6 +38,6 @@ export default new Router({
     },]
   }, {
     path: '*',
-    component: () => import('./../../view/404.vue')
+    component: () => import('@/components/404.vue')
   }]
 })
