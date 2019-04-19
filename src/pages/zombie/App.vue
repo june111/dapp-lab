@@ -1,11 +1,5 @@
-
 <template>
-    <div id="app">
-    	ddd
-    </div>
+  <div id="app">
+    <router-view keep-alive />
+  </div>
 </template>
-<script>
-export default {
-    name: 'App',
-}
-</script>

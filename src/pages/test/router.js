@@ -14,11 +14,11 @@ export default new Router({
   //   component: () => import('./components/random-b.vue')
   // },
   {
-    path: '/test-collection',
+    path: '/',
     component: () => import('./views/layout.vue'),
-    redirect: '/test-collection/basic',
+    redirect: '/test-collection',
     children: [{
-      path: 'basic',
+      path: 'test-collection',
       component: () => import('./views/basic.vue'),
     }, {
       path: 'msg-sign',
