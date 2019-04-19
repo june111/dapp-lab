@@ -37,7 +37,7 @@ module.exports = {
   productionSourceMap: false,
   pages,
   devServer: {
-    index: 'page1.html', //默认启动serve 打开page1页面
+    index: 'index.html', //默认启动serve 打开page1页面
     open: process.platform === 'darwin',
     host: '',
     port: 8088,
@@ -58,7 +58,8 @@ module.exports = {
           '^/wa': ''
         }
       }
-    }, // 设置代理
+    }, 
+    // 设置代理
     before: app => {}
   },
   chainWebpack: config => {
@@ -79,25 +80,23 @@ module.exports = {
       .set('@', resolve('src'))
       .set('assets', resolve('src/assets'))
       .set('components', resolve('src/components'))
-      // .set('layout', resolve('src/layout'))
-      // .set('base', resolve('src/base'))
       .set('static', resolve('src/static'))
       .set('utils', resolve('src/utils'))
       .set('contracts', resolve('src/contracts'));
 
-    if (process.env.NODE_ENV === "production") {
-      config.plugin("extract-css").tap(() => [{
-        path: path.join(__dirname, "./dist"),
-        filename: "css/[name].[contenthash:8].css"
-      }]);
-    }
+    // if (process.env.NODE_ENV === "production") {
+    //   config.plugin("extract-css").tap(() => [{
+    //     path: path.join(__dirname, "./dist"),
+    //     filename: "css/[name].[contenthash:8].css"
+    //   }]);
+    // }
   },
   configureWebpack: config => {
-    if (process.env.NODE_ENV === "production") {
-      config.output = {
-        path: path.join(__dirname, "./dist"),
-        filename: "js/[name].[contenthash:8].js"
-      };
-    }
+    // if (process.env.NODE_ENV === "production") {
+    //   config.output = {
+    //     path: path.join(__dirname, "./dist"),
+    //     filename: "js/[name].[contenthash:8].js"
+    //   };
+    // }
   }
 }
