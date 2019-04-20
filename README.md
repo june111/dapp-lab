@@ -26,13 +26,17 @@ Live version available at [http://blog.junezhu.top/dapp-lab/](http://blog.junezh
 ## Catalog
 
 * DApp
-	*  Dice (Guesses the number from 1 to 10)
+	* Dice (Guesses the number from 1 to 10)
+	* Zombie card game (TBD)
+	* Lottery (TBD)
+	* Airdrop (TBD)
 
 * Interactive function between smart contract and web3
-	* Reading and writing in smart contracts
+	* Smart contract read and write
 	* Message signing for smart contracts
-	* How to get smart contract information
-	* Get the parameters needed to send a transaction from web3
+	* Get information about a specified smart contract
+	* Get random number via Oraclize
+	* Compile data by abi
 	* Send transactions directly with the private key
 
 ## Author

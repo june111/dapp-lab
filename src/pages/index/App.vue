@@ -51,13 +51,13 @@ export default {
             title: 'Smart contract read and write'
           }, {
             path: baseUrl + '/test.html#/test-collection/msg-sign',
-            title: '合约的消息签名'
+            title: 'Message signing for smart contracts'
           }, {
             path: baseUrl + '/test.html#/test-collection/contract-info',
             title: 'Get information about a specified smart contract'
           }, {
             path: baseUrl + '/test.html#/test-collection/random',
-            title: 'Get random number'
+            title: 'Get random number via Oraclize'
           }, {
             path: baseUrl + '/test.html#/test-collection/get-data-code',
             title: 'Compile data by abi'
