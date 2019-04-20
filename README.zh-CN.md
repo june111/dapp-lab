@@ -1,5 +1,20 @@
 # DApp 实验室
 
+<p align="center">
+   	<a href="https://travis-ci.com/june111/dapp-lab" rel="nofollow">
+    	<img src="https://travis-ci.com/june111/dapp-lab.svg?branch=master" alt="Build Status" />
+  	</a>
+	<a href="https://github.com/vuejs/vue">
+    	<img src="https://img.shields.io/badge/vue-2.6.10-brightgreen.svg" alt="vue" />
+  	</a>
+  	<a href="https://github.com/vuetifyjs/vuetify">
+    	<img src="https://img.shields.io/badge/vuetify-1.5.7-brightgreen.svg" alt="vuetify" />
+  	</a>
+	<a href="https://codebeat.co/projects/github-com-june111-dapp-lab-master">
+		<img alt="codebeat badge" src="https://codebeat.co/badges/7b7157b4-4535-4285-abd8-03e47d048f5d" />
+	</a>
+</p>
+
 [English](./README.md) | 简体中文
 
 ## 介绍
