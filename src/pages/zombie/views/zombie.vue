@@ -1,6 +1,6 @@
 <template>
   <div>
-    content
+    content x
     <ZombieChar optionalDNA="1337133713371337" zombieName="June" skinColorChoice="1" eyeColorChoice="2" clothesColorChoice="3" headChoice="3" />
   </div>
 </template>
