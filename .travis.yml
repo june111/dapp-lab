@@ -12,13 +12,18 @@ install:
 script:
   - npm run build
 
-deploy:
-provider: pages
-skip_cleanup: true
-github_token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
-keep_history: true
-on:
-  branch: release
+after_script:
+  - cd ./docs
+  - git init
+  - git config user.name "${U_NAME}"
+  - git config user.email "${U_EMAIL}"
+  - git add .
+  - git commit -m "Update github page"
+  - git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:${P_BRANCH}
+
+branches:
+  only:
+    - master
 
 notifications:
   email:
