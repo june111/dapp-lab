@@ -47,22 +47,22 @@ export default {
         {
           title: 'Interactive function between smart contract and web3',
           detail: [{
-            path: baseUrl + '/test.html#/test-collection/basic',
+            path: baseUrl + '/test.html#/contract-basic',
             title: 'Smart contract read and write'
           }, {
-            path: baseUrl + '/test.html#/test-collection/msg-sign',
+            path: baseUrl + '/test.html#/msg-sign',
             title: 'Message signing for smart contracts'
           }, {
-            path: baseUrl + '/test.html#/test-collection/contract-info',
+            path: baseUrl + '/test.html#/contract-info',
             title: 'Get information about a specified smart contract'
           }, {
-            path: baseUrl + '/test.html#/test-collection/random',
+            path: baseUrl + '/test.html#/random',
             title: 'Get random number via Oraclize'
           }, {
-            path: baseUrl + '/test.html#/test-collection/get-data-code',
+            path: baseUrl + '/test.html#/get-data-code',
             title: 'Compile data by abi'
           }, {
-            path: baseUrl + '/test.html#/test-collection/send-raw-transaction',
+            path: baseUrl + '/test.html#/send-raw-transaction',
             title: 'Sign transactions with the private key'
           }]
         }

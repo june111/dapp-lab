@@ -2,7 +2,7 @@
   <div>
     <v-card>
       <v-card-title primary-title>
-        <h3 class="headline mb-0">用 abi 获取 data</h3>
+        <h3 class="headline mb-0">Compile data by ABI</h3>
       </v-card-title>
       <v-container grid-list-md text-xs-center>
         <v-layout row wrap>
@@ -10,7 +10,7 @@
             <v-text-field v-model="amount" label="amount"></v-text-field>
           </v-flex>
           <v-flex xs2 sm2>
-            <v-btn color="blue" dark @click="write">写数据</v-btn>
+            <v-btn color="blue" dark @click="write">Write</v-btn>
           </v-flex>
         </v-layout>
       </v-container>
@@ -25,7 +25,6 @@ import Web3 from 'web3'
 import abi from 'ethereumjs-abi'
 
 import { ABI, contractAddr } from 'contracts/info'
-import { toNum } from 'utils'
 import {
   getGasPrice,
   estimateGas

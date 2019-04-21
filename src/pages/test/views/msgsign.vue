@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title primary-title>
-      <h3 class="headline mb-0">消息签名</h3>
+      <h3 class="headline mb-0">Message signing for smart contracts</h3>
     </v-card-title>
     <v-divider></v-divider>
     <v-card-text>

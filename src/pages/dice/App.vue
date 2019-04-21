@@ -69,7 +69,6 @@
 <script>
 import Web3 from 'web3'
 import abi from 'ethereumjs-abi'
-import EthereumTx from 'ethereumjs-tx'
 import { toNum } from 'utils'
 import { ABI, contractAddr } from 'contracts/dice/abi'
 import { estimateGas } from 'utils/web3'

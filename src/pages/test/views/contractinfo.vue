@@ -2,14 +2,14 @@
   <v-card>
     <v-card-title primary-title>
       <div>
-        <h3 class="headline mb-0">合约信息</h3>
-        <p>分别从第三方接口和合约获得指定 token 合约的信息，包括 token 的名字，符号，精度，总量等</p>
+        <h3 class="headline mb-0">Contract info</h3>
+        <p>Obtain information about the specified token contract from the third-party interface and contract, including the token name, symbol, total supply, decimals, etc.</p>
       </div>
     </v-card-title>
     <v-divider></v-divider>
     <v-card-title primary-title>
       <div>
-        <h3 class="mb-0">使用 Ethplorer API</h3>
+        <h3 class="mb-0">Using Ethplorer API</h3>
       </div>
     </v-card-title>
     <v-container grid-list-md text-xs-center>
@@ -18,7 +18,7 @@
           <v-text-field v-model="address" label="address"></v-text-field>
         </v-flex>
         <v-flex xs6 sm2>
-          <v-btn color="blue" dark @click="checkAPI">查询合约信息</v-btn>
+          <v-btn color="blue" dark @click="checkAPI">Search</v-btn>
         </v-flex>
       </v-layout>
     </v-container>
@@ -28,7 +28,7 @@
     <v-divider></v-divider>
     <v-card-title primary-title>
       <div>
-        <h3 class="mb-0">使用合约</h3>
+        <h3 class="mb-0">Using contract ABI</h3>
       </div>
     </v-card-title>
     <v-container grid-list-md text-xs-center>
@@ -37,7 +37,7 @@
           <v-text-field v-model="contractAddr" label="address"></v-text-field>
         </v-flex>
         <v-flex xs6 sm2>
-          <v-btn color="blue" dark @click="checkContract">查询合约信息</v-btn>
+          <v-btn color="blue" dark @click="checkContract">Search</v-btn>
         </v-flex>
       </v-layout>
     </v-container>

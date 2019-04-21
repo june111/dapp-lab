@@ -2,7 +2,7 @@
   <div>
     <v-card>
       <v-card-title primary-title>
-        <h3 class="headline mb-0">使用私钥发送交易</h3>
+        <h3 class="headline mb-0">Sign transactions with the private key</h3>
       </v-card-title>
       <v-container grid-list-md text-xs-center>
         <v-layout row wrap>
@@ -10,7 +10,7 @@
             <v-text-field v-model="amount" label="amount"></v-text-field>
           </v-flex>
           <v-flex xs2 sm2>
-            <v-btn color="blue" dark @click="write">发送</v-btn>
+            <v-btn color="blue" dark @click="write">Send</v-btn>
           </v-flex>
         </v-layout>
       </v-container>
@@ -26,7 +26,6 @@ import abi from 'ethereumjs-abi'
 import EthereumTx from 'ethereumjs-tx'
 
 import { ABI, contractAddr } from 'contracts/info'
-import { toNum } from 'utils'
 import {
   getGasPrice,
   estimateGas,

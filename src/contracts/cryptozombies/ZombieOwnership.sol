@@ -1,8 +1,8 @@
 pragma solidity ^0.4.25;
 
 import "./zombieattack.sol";
-import "./erc721.sol";
-import "./safemath.sol";
+import "github.com/june111/openzeppelin-solidity/contracts/math/SafeMath.sol";
+import "github.com/june111/openzeppelin-solidity/contracts/token/ERC721/ERC721.sol";
 
 /// @title A contract that manages transfering zombie ownership
 /// @author June

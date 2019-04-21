@@ -16,9 +16,9 @@ export default new Router({
   {
     path: '/',
     component: () => import('./views/layout.vue'),
-    redirect: '/test-collection',
+    redirect: '/contract-basic',
     children: [{
-      path: 'test-collection',
+      path: 'contract-basic',
       component: () => import('./views/basic.vue'),
     }, {
       path: 'msg-sign',

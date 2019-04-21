@@ -2,8 +2,8 @@
   <div>
     <v-card>
       <v-card-text>
-        <v-btn color="blue" dark @click="load">读取合约余额</v-btn>
-        <span v-if="contractBalance">合约余额：{{contractBalance}}</span>
+        <v-btn color="blue" dark @click="load">Get Balance</v-btn>
+        <span v-if="contractBalance">Contract Balance：{{contractBalance}}</span>
       </v-card-text>
       <v-divider></v-divider>
       <v-container grid-list-md text-xs-center>
@@ -12,7 +12,7 @@
             <v-text-field v-model="amount" label="amount"></v-text-field>
           </v-flex>
           <v-flex xs2 sm2>
-            <v-btn color="blue" dark @click="write">写数据</v-btn>
+            <v-btn color="blue" dark @click="write">Write</v-btn>
           </v-flex>
         </v-layout>
       </v-container>
