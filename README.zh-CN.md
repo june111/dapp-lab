@@ -11,7 +11,7 @@
     	<img src="https://img.shields.io/badge/vuetify-1.5.7-brightgreen.svg" alt="vuetify" />
   	</a>
 	<a href="https://codebeat.co/projects/github-com-june111-dapp-lab-master">
-		<img alt="codebeat badge" src="https://codebeat.co/badges/7b7157b4-4535-4285-abd8-03e47d048f5d" />
+		<img alt="codebeat badge" src="https://codebeat.co/badges/84a94b66-29eb-4bf7-b67c-b7f8de4df4a2" />
 	</a>
 </p>
 
