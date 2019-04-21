@@ -5,14 +5,16 @@ Vue.use(Router)
 
 export default new Router({
   base: 'dapp-lab/',
-  routes: [
-  {
+  routes: [{
     path: '/',
     component: () => import('./views/layout.vue'),
     redirect: '/home',
     children: [{
       path: 'home',
-      component: () => import('./views/zombie.vue'),
+      component: () => import('./views/home.vue')
+    }, {
+      path: 'create',
+      component: () => import('./views/create.vue')
     }, ]
   }, {
     path: '*',

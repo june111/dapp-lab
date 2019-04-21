@@ -6,7 +6,18 @@
 </template>
 <script>
 import Web3 from 'web3'
-import { ABI, contractAddr } from 'contracts/cryptozombies/abi'
+import {
+  ZombieFactoryABI,
+  ZombieFeedingABI,
+  ZombieAttackABI,
+  ZombieHelperABI,
+  ZombieOwnershipABI,
+  ZombieFactoryRopstenAddr,
+  ZombieFeedingRopstenAddr,
+  ZombieAttackRopstenAddr,
+  ZombieHelperRopstenAddr,
+  ZombieOwnershipRopstenAddr
+} from 'contracts/cryptozombies/abi'
 import { toNum } from 'utils'
 import ZombieChar from './ZombieChar.vue'
 export default {
