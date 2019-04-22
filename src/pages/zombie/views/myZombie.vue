@@ -9,6 +9,13 @@
           <v-flex xs6>
             <ZombieChar :zombieName="item.name" :zombieDescription="'Level '+item.level" :skinColorChoice="item.zombieDetails.skinColorChoice" :clothesColorChoice="item.zombieDetails.clothesColorChoice" :eyeColorChoice="item.zombieDetails.eyeColorChoice" :headChoice="item.zombieDetails.headChoice" :shirtChoice="item.zombieDetails.shirtChoice" :eyeChoice="item.zombieDetails.eyeChoice" :hideNameField="false" />
           </v-flex>
+          <v-flex xs6>
+            <v-btn color="info" @click="isBattle = true">Battle</v-btn>
+            <v-btn color="error" @click="handleAttack">Attack</v-btn>
+            <div v-if="isBattle == true">
+              <ZombieChar :zombieName="targetZombieName" :autoGenerate="true" :hideNameField="false" v-on:currentDna="currentDna" />
+            </div>
+          </v-flex>
         </v-layout>
       </template>
       <v-layout v-if="!showZombie">
@@ -24,7 +31,7 @@ import {
   ZombieOwnershipABI,
   ZombieOwnershipRopstenAddr
 } from 'contracts/cryptozombies/abi'
-import { toNum } from 'utils'
+import { toNum, random } from 'utils'
 import { callForContract } from 'utils/web3'
 
 import ZombieChar from './../components/ZombieChar.vue'
@@ -42,6 +49,9 @@ export default {
       zombieList: [],
       showZombie: false,
 
+      targetZombieDna: '',
+      isBattle: false,
+
     }
   },
   components: {
@@ -54,7 +64,9 @@ export default {
       hvProvider: state => state.hvProvider
 
     }),
-
+    targetZombieName: function() {
+      return random(8)
+    }
   },
   watch: {
     hvProvider: function(newValue, oldValue) {
@@ -73,7 +85,7 @@ export default {
       this.cryptoZombies = this.zombiesContract.at(ZombieOwnershipRopstenAddr);
       this.getZombiesCount(this.account)
     },
-   async getZombiesCount(owner) {
+    async getZombiesCount(owner) {
       let encoded = '0x' + abi.simpleEncode('balanceOf(address):(uint256)', owner).toString('hex')
 
       let result = await callForContract(ZombieOwnershipRopstenAddr, encoded)
@@ -93,7 +105,7 @@ export default {
     },
 
     getZombiesByContract(index) {
-      this.cryptoZombies.zombies(index, (err, result, data) => {
+      this.cryptoZombies.zombies(index, (err, result) => {
         if (err) {
           console.error(err)
         } else {
@@ -138,6 +150,26 @@ export default {
       }
       return zombieDetails
     },
+
+    currentDna(currentDna) {
+      this.targetZombieDna = currentDna
+      console.log('currentDna', currentDna)
+    },
+    handleAttack() {
+      this.attack(this.account, '0x59A0bc68b2803D71FC2b49e196f5CEfe0881E06A')
+    },
+    attack(_zombieId, _targetId) {
+      this.cryptoZombies.attack(_zombieId, _targetId, {
+        from: this.account,
+        to:ZombieOwnershipRopstenAddr
+      },(err, result) => {
+        if (err) {
+          console.error(err)
+        } else {
+          console.log('result', result)
+        }
+      })
+    }
 
   }
 }

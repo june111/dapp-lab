@@ -15,9 +15,12 @@ export default new Router({
     }, {
       path: 'create',
       component: () => import('./views/create.vue')
-    },  {
+    }, {
       path: 'my-zombie',
       component: () => import('./views/myZombie.vue')
+    }, {
+      path: 'battle',
+      component: () => import('./views/battle.vue')
     }, ]
   }, {
     path: '*',

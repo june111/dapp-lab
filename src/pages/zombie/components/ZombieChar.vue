@@ -23,7 +23,6 @@
       <img :style="eyeColor" :class="eyeClass(eyeChoice)"  :src="eyeSrc(eyeChoice)">
       <img class="mouth" src="~@/assets/zombieparts/mouth-1@2x.png">
     </div>
-
       <div :class="hideNameFieldClass">
         <div class="card-header bg-dark">
           <strong>{{zombieName}}</strong>
@@ -89,6 +88,12 @@ export default {
       type: Boolean
     }
   },
+  mounted: function() {
+    this.$nextTick(function() {
+      this.$emit('currentDna', this.currentDna)
+
+    })
+  },
   data() {
     return {
       isZombieLoaded: false,
@@ -108,6 +113,7 @@ export default {
           dnaStr = "0" + dnaStr
         return dnaStr
       }
+
     },
     currentHeadChoice() {
       return this.autoGenerate ? (parseInt(this.currentDna.substring(0, 2)) % 7 + 1) : this.headChoice
@@ -204,15 +210,18 @@ export default {
   // background-image: url('~@/assets/zombiebg/walls.jpg');
   background-size: cover;
 }
+
 // @dev name and description place
-.zombie-card{
+.zombie-card {
   text-align: center;
   position: relative;
-  top:300px;
+  top: 300px;
 }
-.hide{
+
+.hide {
   display: none;
 }
+
 .zombie-preview {
   height: 95vh;
   width: 55vh;
