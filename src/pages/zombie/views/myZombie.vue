@@ -37,9 +37,12 @@ import { callForContract } from 'utils/web3'
 import ZombieChar from './../components/ZombieChar.vue'
 
 export default {
-  name: 'myzombie',
+  name: 'my-zombie',
   created() {
-    this.getWeb3()
+  },
+   beforeCreate () {
+    console.log('registerWeb3 Action dispatched from casino-dapp.vue')
+    this.$store.dispatch('registerWeb3')
   },
   data() {
     return {
@@ -71,7 +74,7 @@ export default {
   watch: {
     hvProvider: function(newValue, oldValue) {
       if (newValue) {
-        this.setZombieFactoryContract()
+        this.setZombieContract()
       }
     },
   },
@@ -80,12 +83,13 @@ export default {
       this.$store.dispatch('registerWeb3')
     },
 
-    setZombieFactoryContract() {
+    setZombieContract() {
       this.zombiesContract = web3.eth.contract(ZombieOwnershipABI);
       this.cryptoZombies = this.zombiesContract.at(ZombieOwnershipRopstenAddr);
       this.getZombiesCount(this.account)
     },
     async getZombiesCount(owner) {
+    	console.log('owner',owner)
       let encoded = '0x' + abi.simpleEncode('balanceOf(address):(uint256)', owner).toString('hex')
 
       let result = await callForContract(ZombieOwnershipRopstenAddr, encoded)
@@ -156,7 +160,7 @@ export default {
       console.log('currentDna', currentDna)
     },
     handleAttack() {
-      this.attack(this.account, '0x59A0bc68b2803D71FC2b49e196f5CEfe0881E06A')
+      this.attack(0, 0)
     },
     attack(_zombieId, _targetId) {
       this.cryptoZombies.attack(_zombieId, _targetId, {

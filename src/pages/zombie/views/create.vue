@@ -30,16 +30,17 @@
   </div>
 </template>
 <script>
+import { mapState, mapGetters } from 'vuex'
 import {
   ZombieOwnershipABI,
   ZombieOwnershipRopstenAddr
 } from 'contracts/cryptozombies/abi'
-import { toNum } from 'utils'
 import ZombieChar from './../components/ZombieChar.vue'
 
 export default {
+  name: 'create-zombie',
   created() {
-    this.setZombieFactoryContract()
+    // this.getWeb3()
   },
   data() {
     return {
@@ -83,7 +84,20 @@ export default {
   components: {
     ZombieChar
   },
+  watch: {
+    hvProvider: function(newValue, oldValue) {
+      if (newValue) {
+        // this.setZombieContract()
+      }
+    },
+  },
   computed: {
+    ...mapState({
+      // 账户地址
+      account: state => state.web3.account,
+      hvProvider: state => state.hvProvider
+
+    }),
     headChoice: function() {
       return this.Choice[0].typeChoice
     },
@@ -120,11 +134,21 @@ export default {
     },
   },
   methods: {
+    getWeb3() {
+      this.$store.dispatch('registerWeb3')
+    },
+    setZombieContract() {
+      this.zombiesContract = web3.eth.contract(ZombieOwnershipABI);
+      this.cryptoZombies = this.zombiesContract.at(ZombieOwnershipRopstenAddr);
+      console.log('Set Contract!')
+    },
+
+
     handleCreate() {
       this.cryptoZombies.createRandomZombie(this.zombieName, {
         gas: 300000, //Gas Limit 300000
         gasPrice: window.web3.toWei('0.000000001', 'ether'), // 1 Gwei
-        from: window.web3.eth.coinbase
+        from: this.account
       }, (err, result, data) => {
         if (err) {
           console.error(err)
@@ -133,50 +157,7 @@ export default {
         }
       })
     },
-   
-    setZombieFactoryContract() {
-      this.zombiesContract = window.web3.eth.contract(ZombieFactoryABI);
-      this.cryptoZombies = this.zombiesContract.at(ZombieOwnershipRopstenAddr);
-      console.log('Set Contract!')
-    },
-    // take the Zombie dna, and update our image
-    generateZombie(id, name, dna) {
-      let dnaStr = String(dna)
-      // pad DNA with leading zeroes if it's less than 16 characters
-      while (dnaStr.length < 16)
-        dnaStr = "0" + dnaStr
 
-      let zombieDetails = {
-        // first 2 digits make up the head. We have 7 possible heads, so % 7
-        // to get a number 0 - 6, then add 1 to make it 1 - 7. Then we have 7
-        // image files named "head1.png" through "head7.png" we load based on
-        // this number:
-        headChoice: dnaStr.substring(0, 2) % 7 + 1,
-        // 2nd 2 digits make up the eyes, 11 variations:
-        eyeChoice: dnaStr.substring(2, 4) % 11 + 1,
-        // 6 variations of shirts:
-        shirtChoice: dnaStr.substring(4, 6) % 6 + 1,
-        // last 6 digits control color. Updated using CSS filter: hue-rotate
-        // which has 360 degrees:
-        skinColorChoice: parseInt(dnaStr.substring(6, 8) / 100 * 360),
-        eyeColorChoice: parseInt(dnaStr.substring(8, 10) / 100 * 360),
-        clothesColorChoice: parseInt(dnaStr.substring(10, 12) / 100 * 360),
-        zombieName: name,
-        zombieDescription: "A Level 1 CryptoZombie",
-      }
-      return zombieDetails
-    },
-
-    getZombieDetails(id) {
-      return this.cryptoZombies.zombies(id).call()
-    },
-    zombieToOwner(id) {
-      return this.cryptoZombies.zombieToOwner(id).call()
-    },
-
-    getZombiesByOwner(owner) {
-      return this.cryptoZombies.getZombiesByOwner(owner).call()
-    },
   }
 }
 
@@ -186,4 +167,5 @@ export default {
   position: relative;
   top: 300px;
 }
+
 </style>
