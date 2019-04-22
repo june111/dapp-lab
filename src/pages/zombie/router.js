@@ -7,7 +7,7 @@ export default new Router({
   base: 'dapp-lab/',
   routes: [{
     path: '/',
-    component: () => import('./views/layout.vue'),
+    component: () => import('./components/layout.vue'),
     redirect: '/home',
     children: [{
       path: 'home',
@@ -15,6 +15,9 @@ export default new Router({
     }, {
       path: 'create',
       component: () => import('./views/create.vue')
+    },  {
+      path: 'my-zombie',
+      component: () => import('./views/myZombie.vue')
     }, ]
   }, {
     path: '*',

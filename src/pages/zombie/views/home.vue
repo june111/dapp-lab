@@ -1,5 +1,5 @@
 <template>
   <div>
-    <router-link to="/create">go create</router-link>
+    <router-link to="/myZombie">my Zombie</router-link>
   </div>
 </template>

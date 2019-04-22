@@ -18,7 +18,6 @@ export default new Vuex.Store({
       error: null
     },
     hvProvider: false || Cookies.get('hvProvider')
-    // isLogin: 0,
 
     // Socket
     // stompClient,
@@ -27,14 +26,8 @@ export default new Vuex.Store({
   },
   mutations: {
 
-    SET_Metamask: (state, hvProvider) => {
-      state.hvProvider = hvProvider
-    },
-    // SET_LoginStatus: (state, isLogin) => {
-    //     state.isLogin = isLogin
-    // },
-    // SET_Contract: (state, contractAddr) => {
-    //     state.contract = contractAddr
+    // SET_Metamask: (state, hvProvider) => {
+    //   state.hvProvider = hvProvider
     // },
 
     // Socket
@@ -66,7 +59,7 @@ export default new Vuex.Store({
       state.hvProvider = result.hvProvider
       // alert(result.hvProvider)
       Cookies.set('hvProvider', result.hvProvider)
-      pollWeb3()
+      // pollWeb3()
     },
 
     /**
@@ -106,7 +99,7 @@ export default new Vuex.Store({
     registerWeb3 ({ commit }) {
       // console.log('registerWeb3 Action being executed')
       getWeb3.then(result => {
-        // console.log('committing result to registerWeb3Instance mutation')
+        console.log('committing result to registerWeb3Instance mutation')
         commit('registerWeb3Instance', result)
       }).catch(e => {
         console.log('error in action registerWeb3', e)

@@ -2,51 +2,37 @@
   <div class="zombie-char" v-images-loaded="zombieLoaded">
     <div class="zombie-loading zombie-parts" v-show="!isZombieLoaded"></div>
     <div class="zombie-parts" v-show="isZombieLoaded" :class="partsVisible">
-      <img :style="clothesColor" v-show="!catMode" class="left-feet" src="~@/assets/zombieparts/left-feet-1@2x.png">  
-      <img :style="clothesColor" v-show="!catMode" class="right-feet" src="~@/assets/zombieparts/right-feet-1@2x.png">  
-
-      <img :style="clothesColor" v-show="!catMode" class="left-leg" src="~@/assets/zombieparts/left-leg-1@2x.png">  
-      <img :style="clothesColor" v-show="!catMode" class="right-leg" src="~@/assets/zombieparts/right-leg-1@2x.png">  
-
-      <img :style="clothesColor" v-show="!catMode" class="left-thigh" src="~@/assets/zombieparts/left-thigh-1@2x.png">  
+      <img :style="clothesColor" v-show="!catMode" class="left-feet" src="~@/assets/zombieparts/left-feet-1@2x.png">
+      <img :style="clothesColor" v-show="!catMode" class="right-feet" src="~@/assets/zombieparts/right-feet-1@2x.png">
+      <img :style="clothesColor" v-show="!catMode" class="left-leg" src="~@/assets/zombieparts/left-leg-1@2x.png">
+      <img :style="clothesColor" v-show="!catMode" class="right-leg" src="~@/assets/zombieparts/right-leg-1@2x.png">
+      <img :style="clothesColor" v-show="!catMode" class="left-thigh" src="~@/assets/zombieparts/left-thigh-1@2x.png">
       <img :style="clothesColor" v-show="!catMode" class="right-thigh" src="~@/assets/zombieparts/right-thigh-1@2x.png">
-
-      <img :style="headColor" class="left-forearm" src="~@/assets/zombieparts/left-forearm-1@2x.png">  
+      <img :style="headColor" class="left-forearm" src="~@/assets/zombieparts/left-forearm-1@2x.png">
       <img :style="headColor" class="right-forearm" src="~@/assets/zombieparts/right-forearm-1@2x.png">
-
-      <img :style="headColor" class="right-upper-arm" src="~@/assets/zombieparts/right-upper-arm-1@2x.png">  
-
+      <img :style="headColor" class="right-upper-arm" src="~@/assets/zombieparts/right-upper-arm-1@2x.png">
       <img :style="clothesColor" class="torso" src="~@/assets/zombieparts/torso-1@2x.png">
-
-      <img :style="clothesColor" v-show="catMode" class="cat-legs" src="~@/assets/zombieparts/catlegs.png">            
-      
-      <img :style="clothesColor" :class="shirtClass(n)" v-for="n in 6" :src="shirtSrc(n)">  
-
-      <img :style="headColor" class="left-upper-arm" src="~@/assets/zombieparts/left-upper-arm-1@2x.png">  
-
-      <img :style="headColor" class="left-forearm" src="~@/assets/zombieparts/left-forearm-1@2x.png">  
+      <img :style="clothesColor" v-show="catMode" class="cat-legs" src="~@/assets/zombieparts/catlegs.png">
+      <img :style="clothesColor" :class="shirtClass(shirtChoice)"  :src="shirtSrc(shirtChoice)">
+      <img :style="headColor" class="left-upper-arm" src="~@/assets/zombieparts/left-upper-arm-1@2x.png">
+      <img :style="headColor" class="left-forearm" src="~@/assets/zombieparts/left-forearm-1@2x.png">
       <img :style="headColor" class="right-forearm" src="~@/assets/zombieparts/right-forearm-1@2x.png">
-
-      <img :style="headColor" class="left-hand" src="~@/assets/zombieparts/hand1-1@2x.png">  
+      <img :style="headColor" class="left-hand" src="~@/assets/zombieparts/hand1-1@2x.png">
       <img :style="headColor" class="right-hand" src="~@/assets/zombieparts/hand-2-1@2x.png">
-          
-      <img :style="headColor" :class="headClass(n)" v-for="n in 7" :src="headSrc(n)">
-      <img :style="eyeColor" :class="eyeClass(n)" v-for="n in 11" :src="eyeSrc(n)">
+      <img :style="headColor" :class="headClass(headChoice)"  :src="headSrc(headChoice)">
+      <img :style="eyeColor" :class="eyeClass(eyeChoice)"  :src="eyeSrc(eyeChoice)">
       <img class="mouth" src="~@/assets/zombieparts/mouth-1@2x.png">
     </div>
 
-    <div :class="hideNameFieldClass">
-      <div class="card-header bg-dark">
-        <strong>{{zombieName}}</strong>
+      <div :class="hideNameFieldClass">
+        <div class="card-header bg-dark">
+          <strong>{{zombieName}}</strong>
+        </div>
+        <small>{{currentZombieDescription}}</small>
       </div>
-      <small>{{currentZombieDescription}}</small>
     </div>
-
-  </div>
 </template>
-
-<script >
-// import 'babel-polyfill'
+<script>
 import sha3 from 'js-sha3'
 import bigInt from 'big-integer'
 import imagesLoaded from 'vue-images-loaded'
@@ -103,14 +89,14 @@ export default {
       type: Boolean
     }
   },
-  data () {
+  data() {
     return {
       isZombieLoaded: false,
     }
   },
   computed: {
-    currentDna: function () {
-      if (this.optionalDNA){
+    currentDna: function() {
+      if (this.optionalDNA) {
         return this.optionalDNA
       } else {
         let name = this.zombieName
@@ -141,13 +127,13 @@ export default {
     currentClothesColorChoice() {
       return this.autoGenerate ? (parseInt(this.currentDna.substring(10, 12)) / 100 * 360) : this.clothesColorChoice
     },
-    headColor () {
+    headColor() {
       return this.getColor(this.currentSkinColorChoice);
     },
-    eyeColor () {
+    eyeColor() {
       return this.getColor(this.currentEyeColorChoice);
     },
-    clothesColor () {
+    clothesColor() {
       return this.getColor(this.currentClothesColorChoice);
     },
     partsVisible() {
@@ -183,19 +169,19 @@ export default {
     shirtClass(i) {
       return `shirt shirt-part-${i}`;
     },
-    zombieLoaded(instance ) {
+    zombieLoaded(instance) {
       var self = this;
-      window.setTimeout(function(){
+      window.setTimeout(function() {
         self.isZombieLoaded = true
       }, 2050);
     },
-    getColor (deg) {
+    getColor(deg) {
       return `filter: hue-rotate(${deg}deg);`
     },
   },
 }
-</script>
 
+</script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 .zombie-loading {
@@ -205,18 +191,28 @@ export default {
   width: 192px;
   position: absolute;
   left: 16vh;
-  animation: play 0.7s steps(24) infinite;  
+  animation: play 0.7s steps(24) infinite;
 }
 
 @keyframes play {
-   100% { background-position: -4608px; }
+  100% {
+    background-position: -4608px;
+  }
 }
 
 .zombie-parts-bin-component {
   // background-image: url('~@/assets/zombiebg/walls.jpg');
   background-size: cover;
 }
-
+// @dev name and description place
+.zombie-card{
+  text-align: center;
+  position: relative;
+  top:300px;
+}
+.hide{
+  display: none;
+}
 .zombie-preview {
   height: 95vh;
   width: 55vh;
@@ -239,7 +235,7 @@ export default {
 .zombie-parts {
   position: relative;
   margin-left: -2vh;
-  margin-top: 31vh;
+  margin-top: 15vh;
 
   .head {
     width: 28vh;
@@ -307,7 +303,7 @@ export default {
   top: 19vh;
 }
 
-.right-hand{
+.right-hand {
   width: 4vh;
   position: absolute;
   left: 28.4vh;
@@ -322,7 +318,7 @@ export default {
 }
 
 .right-forearm {
-  width: 4vh;  
+  width: 4vh;
   position: absolute;
   left: 26.4vh;
   top: 20vh;
@@ -375,7 +371,7 @@ export default {
 .zombie-name {
   text-transform: uppercase;
   font-weight: bold;
-  text-shadow: 5px 5px 5px rgba(0,0,0,0.2)
+  text-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2)
 }
 
 .zombie-details {

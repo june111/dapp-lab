@@ -33,7 +33,7 @@ let pollWeb3 = function (state) {
       // 钱包地址变了
       if (typeof (web3.eth.accounts[0]) !== 'undefined' && web3.eth.accounts[0] !== store.state.web3.account) {
         let newAccount = web3.eth.accounts[0]
-        web3.eth.defaultAccount = web3.eth.accounts[0]
+        web3.eth.defaultAccount = newAccount
         console.log('newAccount', newAccount)
         web3.eth.getBalance(newAccount, function (err, newBalance) {
           if (err) {

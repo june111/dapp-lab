@@ -80,3 +80,19 @@ export function getBlockNumber() {
 
 
 }
+
+export function callForContract(contractAddr, encoded) {
+  return new Promise((resolve, reject) => {
+    window.web3.eth.call({
+      to: contractAddr,
+      data: encoded
+    }, (error, result) => {
+      if (!error) {
+        resolve(result)
+      } else
+        console.error(error);
+    });
+  })
+
+
+}
