@@ -39,13 +39,10 @@ import ZombieChar from './../components/ZombieChar.vue'
 
 export default {
   name: 'create-zombie',
-  created() {
-    // this.getWeb3()
-  },
+
   data() {
     return {
-      zombiesContract: undefined,
-      cryptoZombies: undefined,
+      createZombies: undefined,
       zombieName: 'Bob',
       zombieDescription: 'A Level 1 CryptoZombie',
       Choice: [{
@@ -84,18 +81,21 @@ export default {
   components: {
     ZombieChar
   },
+
+
   watch: {
-    hvProvider: function(newValue, oldValue) {
-      if (newValue) {
-        // this.setZombieContract()
-      }
-    },
+    // hvProvider: function(newValue, oldValue) {
+    //   if (newValue) {
+    //     console.log('hvProvider',hvProvider)
+    //     // this.setZombieContract()
+    //   }
+    // },
   },
   computed: {
     ...mapState({
       // 账户地址
-      account: state => state.web3.account,
-      hvProvider: state => state.hvProvider
+      // account: state => state.web3.account,
+      // hvProvider: state => state.hvProvider
 
     }),
     headChoice: function() {
@@ -133,13 +133,13 @@ export default {
       return dna
     },
   },
+  beforeCreate() {
+    // this.$store.dispatch('registerWeb3')
+  },
   methods: {
-    getWeb3() {
-      this.$store.dispatch('registerWeb3')
-    },
+  
     setZombieContract() {
-      this.zombiesContract = web3.eth.contract(ZombieOwnershipABI);
-      this.cryptoZombies = this.zombiesContract.at(ZombieOwnershipRopstenAddr);
+      this.createZombies = web3.eth.contract(ZombieOwnershipABI).at(ZombieOwnershipRopstenAddr);
       console.log('Set Contract!')
     },
 

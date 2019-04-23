@@ -122,15 +122,27 @@ export function hex2str(hex) {
 
 // 清除空白字符
 function character(str) {
-    return str.replace(/\u0000|\u0001|\u0002|\u0003|\u0004|\u0005|\u0006|\u0007|\u0008|\u0009|\u000a|\u000b|\u000c|\u000d|\u000e|\u000f|\u0010|\u0011|\u0012|\u0013|\u0014|\u0015|\u0016|\u0017|\u0018|\u0019|\u001a|\u001b|\u001c|\u001d|\u001e|\u001f|\u007F/g, "");
+  return str.replace(/\u0000|\u0001|\u0002|\u0003|\u0004|\u0005|\u0006|\u0007|\u0008|\u0009|\u000a|\u000b|\u000c|\u000d|\u000e|\u000f|\u0010|\u0011|\u0012|\u0013|\u0014|\u0015|\u0016|\u0017|\u0018|\u0019|\u001a|\u001b|\u001c|\u001d|\u001e|\u001f|\u007F/g, "");
 }
 
 // 生成指定长度随机字符串可封装成方法
 export function random(length) {
-    var str = Math.random().toString(36).substr(2);
-    if (str.length>=length) {
-        return str.substr(0, length);
-    }
-    str += random(length-str.length);
-    return str;
+  var str = Math.random().toString(36).substr(2);
+  if (str.length >= length) {
+    return str.substr(0, length);
+  }
+  str += random(length - str.length);
+  return str;
 }
+
+
+export const promisify = (inner) =>
+  new Promise((resolve, reject) =>
+    inner((err, res) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(res);
+      }
+    })
+  );

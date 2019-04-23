@@ -19,7 +19,8 @@
         </v-layout>
       </template>
       <v-layout v-if="!showZombie">
-        <router-link to="/create">Go to create</router-link>
+        <!-- <router-link to="/create">Go to create</router-link> -->
+        <router-link to="/home">Go to create</router-link>
       </v-layout>
     </v-container>
   </div>
@@ -38,12 +39,7 @@ import ZombieChar from './../components/ZombieChar.vue'
 
 export default {
   name: 'my-zombie',
-  created() {
-  },
-   beforeCreate () {
-    console.log('registerWeb3 Action dispatched from casino-dapp.vue')
-    this.$store.dispatch('registerWeb3')
-  },
+
   data() {
     return {
       zombiesContract: undefined,
@@ -72,29 +68,49 @@ export default {
     }
   },
   watch: {
-    hvProvider: function(newValue, oldValue) {
-      if (newValue) {
-        this.setZombieContract()
-      }
-    },
+   
+  },
+
+  beforeCreate() {
+    console.log('registerWeb3 Action dispatched from my-zombie')
+    this.$store.dispatch('registerWeb3')
+  },
+  created() {
+  },
+  beforeDestroy() {
+    this.zombiesContract = null
+    this.cryptoZombies = null
+    console.log('destroyed')
+  },
+  mounted(){
+    this.setZombieContract()
+
   },
   methods: {
-    getWeb3() {
-      this.$store.dispatch('registerWeb3')
-    },
+    // getWeb3() {
+    //   this.$store.dispatch('registerWeb3')
+    // },
 
     setZombieContract() {
-      this.zombiesContract = web3.eth.contract(ZombieOwnershipABI);
-      this.cryptoZombies = this.zombiesContract.at(ZombieOwnershipRopstenAddr);
+      // this.zombiesContract = web3.eth.contract(ZombieOwnershipABI);
+      // this.cryptoZombies = this.zombiesContract.at(ZombieOwnershipRopstenAddr);
+      try{
+      this.cryptoZombies = web3.eth.contract(ZombieOwnershipABI).at(ZombieOwnershipRopstenAddr)
+ console.log('setZombieContract')
       this.getZombiesCount(this.account)
+      }catch(err){
+console.log('err',err)
+      }
+     
+
     },
     async getZombiesCount(owner) {
-    	console.log('owner',owner)
+      console.log('owner', owner)
       let encoded = '0x' + abi.simpleEncode('balanceOf(address):(uint256)', owner).toString('hex')
 
-      let result = await callForContract(ZombieOwnershipRopstenAddr, encoded)
-      let count = toNum(result)
-      this.getZombies(count)
+      // let result = await callForContract(ZombieOwnershipRopstenAddr, encoded)
+      // let count = toNum(result)
+      // this.getZombies(count)
 
     },
     getZombies(count) {
@@ -103,7 +119,7 @@ export default {
       } else {
         this.showZombie = true
         for (let i = 0; i < count; i++) {
-          this.getZombiesByContract(i)
+          // this.getZombiesByContract(i)
         }
       }
     },
@@ -165,8 +181,8 @@ export default {
     attack(_zombieId, _targetId) {
       this.cryptoZombies.attack(_zombieId, _targetId, {
         from: this.account,
-        to:ZombieOwnershipRopstenAddr
-      },(err, result) => {
+        to: ZombieOwnershipRopstenAddr
+      }, (err, result) => {
         if (err) {
           console.error(err)
         } else {

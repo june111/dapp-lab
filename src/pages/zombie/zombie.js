@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store'
-
+import {VueGlobalError} from '@/utils'
 Vue.config.productionTip = false
 
 // 支持IE11和Safari 9
@@ -16,6 +16,7 @@ import Vuetify from 'vuetify'
 Vue.use(Vuetify, {
   iconfont: 'md' // 'md' || 'mdi' || 'fa' || 'fa4'
 })
+
 
 // vue防重复点击
 Vue.directive('preventReClick', {
