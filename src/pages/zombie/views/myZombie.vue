@@ -19,8 +19,7 @@
         </v-layout>
       </template>
       <v-layout v-if="!showZombie">
-        <!-- <router-link to="/create">Go to create</router-link> -->
-        <router-link to="/home">Go to create</router-link>
+        <router-link to="/create">Go to create</router-link>
       </v-layout>
     </v-container>
     <Loading v-if="isLoading" />
@@ -67,21 +66,36 @@ export default {
       hvProvider: state => state.hvProvider
 
     }),
+    ...mapGetters([
+      // 账户eth余额
+      'balance'
+    ]),
     targetZombieName: function() {
       return random(8)
     }
   },
+  watch: {
+    account: function(newValue, oldValue) {
+      if (newValue !== oldValue) this.getZombiesCount(this.account)
+    },
+    balance: function(newValue, oldValue) {
+    	console.log('-----------oldValue-----------',oldValue)
+    },
+  },
+
   beforeCreate() {
     console.log('registerWeb3 Action dispatched from my-zombie')
     this.$store.dispatch('registerWeb3')
   },
-  created() {},
-  mounted() {
+  created() {
     let time = setInterval(() => {
       if (this.account) clearInterval(time)
       this.setZombieContract()
     }, 1000)
+    	console.log('-----------balance-----------',this.balance)
+
   },
+  mounted() {},
   beforeDestroy() {
     this.zombiesContract = null
     this.cryptoZombies = null
@@ -101,28 +115,37 @@ export default {
       console.log('setZombieContract')
       this.getZombiesCount(this.account)
     },
-    getZombiesCount(owner) {
+    async getZombiesCount(owner) {
+      this.zombieList = []
       console.log('owner', owner)
       let encoded = '0x' + abi.simpleEncode('balanceOf(address):(uint256)', owner).toString('hex')
       this.isLoading = false
 
-      // let result = await callForContract(ZombieOwnershipRopstenAddr, encoded)
-      // let count = toNum(result)
-      // this.getZombies(count)
+      let result = await callForContract(ZombieOwnershipRopstenAddr, encoded)
+      let count = toNum(result)
+      this.getZombies(count)
 
     },
+    // @dev 多个的情况
     getZombies(count) {
       if (count === 0) {
         this.showZombie = false
       } else {
         this.showZombie = true
-        for (let i = 0; i < count; i++) {
-          // this.getZombiesByContract(i)
-        }
+        this.getZombiesByOwner(this.account)
       }
     },
-
-    getZombiesByContract(index) {
+    getZombiesByOwner(owner) {
+      this.cryptoZombies.getZombiesByOwner(owner, (err, result) => {
+        if (err) {
+          console.error(err)
+        } else {
+          let index = toNum(result)
+          this.getZombiesByIndex(index)
+        }
+      })
+    },
+    getZombiesByIndex(index) {
       this.cryptoZombies.zombies(index, (err, result) => {
         if (err) {
           console.error(err)

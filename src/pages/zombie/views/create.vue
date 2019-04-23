@@ -91,11 +91,17 @@ export default {
     //   }
     // },
   },
+    mounted() {
+    let time = setInterval(() => {
+      if (this.account) clearInterval(time)
+      this.setZombieContract()
+    }, 1000)
+  },
   computed: {
     ...mapState({
       // 账户地址
-      // account: state => state.web3.account,
-      // hvProvider: state => state.hvProvider
+      account: state => state.web3.account,
+      hvProvider: state => state.hvProvider
 
     }),
     headChoice: function() {
@@ -145,7 +151,7 @@ export default {
 
 
     handleCreate() {
-      this.cryptoZombies.createRandomZombie(this.zombieName, {
+      this.createZombies.createRandomZombie(this.zombieName, {
         gas: 300000, //Gas Limit 300000
         gasPrice: window.web3.toWei('0.000000001', 'ether'), // 1 Gwei
         from: this.account

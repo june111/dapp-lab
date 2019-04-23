@@ -39,14 +39,14 @@ export default new Vuex.Store({
     // },
 
     /**
-         * web3 实例初始化
-         *
-         * @return   {obj} [web3]
-         *
-         * @Author   June
-         * @DateTime 2018-09-10T09:49:12+0800
-         */
-    registerWeb3Instance (state, payload) {
+     * web3 实例初始化
+     *
+     * @return   {obj} [web3]
+     *
+     * @Author   June
+     * @DateTime 2018-09-10T09:49:12+0800
+     */
+    registerWeb3Instance(state, payload) {
       // console.log('registerWeb3instance Mutation being executed', payload)
       let result = payload
       let web3Copy = state.web3
@@ -59,46 +59,41 @@ export default new Vuex.Store({
       state.hvProvider = result.hvProvider
       // alert(result.hvProvider)
       Cookies.set('hvProvider', result.hvProvider)
-      // pollWeb3()
+      pollWeb3()
     },
 
     /**
-         * 每隔1s, 轮询更新，查一次账户地址和账户余额
-         *
-         * @return   {string} [account] 账户地址
-         * @return   {bignumber} [balance] 账户余额
-         *
-         * @Author   June
-         * @DateTime 2018-09-10T09:47:36+0800
-         */
-    pollWeb3Instance (state, payload) {
+     * 每隔1s, 轮询更新，查一次账户地址和账户余额
+     *
+     * @return   {string} [account] 账户地址
+     * @return   {bignumber} [balance] 账户余额
+     *
+     * @Author   June
+     * @DateTime 2018-09-10T09:47:36+0800
+     */
+    pollWeb3Instance(state, payload) {
       // console.log('pollWeb3Instance mutation being executed', payload)
       state.web3.account = payload.account
       state.web3.balance = payload.balance
+      // console.log('------------pollWeb3Instance---------')
       Cookies.set('account', payload.account)
       Cookies.set('balance', payload.balance)
     }
-
-    // loopWeb3Instance(state, payload) {
-    //     // console.log('pollWeb3Instance mutation being executed', payload)
-    //     console.log('loopWeb3Instance payload', payload)
-    //     state.web3.account = payload.account
-    //     state.web3.balance = payload.balance
-    // },
 
   },
   actions: {
 
     /**
-         * @param    {obj} getWeb3 账户地址，账户余额
-         * @return   {obj} account，balance，injectedWeb3，web3
-         *
-         * @Author   June
-         * @DateTime 2018-09-07
-         */
-    registerWeb3 ({ commit }) {
-      // console.log('registerWeb3 Action being executed')
+     * @param    {obj} getWeb3 账户地址，账户余额
+     * @return   {obj} account，balance，injectedWeb3，web3
+     *
+     * @Author   June
+     * @DateTime 2018-09-07
+     */
+    registerWeb3({ commit }) {
+      console.log('registerWeb3 Action being executed')
       getWeb3.then(result => {
+        console.log('--------------------------------------------')
         console.log('committing result to registerWeb3Instance mutation')
         commit('registerWeb3Instance', result)
       }).catch(e => {
@@ -107,16 +102,16 @@ export default new Vuex.Store({
     },
 
     /**
-         * 修改当前账户地址，余额
-         *
-         * @param    {obj} payload
-         * @param    {string} account 账户地址
-         * @param    {bignumber} balance 余额
-         *
-         * @Author   June
-         * @DateTime 2018-09-07
-         */
-    pollWeb3 ({ commit }, payload) {
+     * 修改当前账户地址，余额
+     *
+     * @param    {obj} payload
+     * @param    {string} account 账户地址
+     * @param    {bignumber} balance 余额
+     *
+     * @Author   June
+     * @DateTime 2018-09-07
+     */
+    pollWeb3({ commit }, payload) {
       // console.log('pollWeb3 action being executed')
       commit('pollWeb3Instance', payload)
     }

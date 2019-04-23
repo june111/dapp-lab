@@ -15,6 +15,7 @@ let getWeb3 = new Promise((resolve, reject) => {
       try {
         // Request account access if needed
         ethereum.enable()
+        console.log('----------account access------------')
         // Acccounts now exposed
         resolve({
           injectedWeb3: window.web3.isConnected(),
@@ -87,6 +88,7 @@ let getWeb3 = new Promise((resolve, reject) => {
    * 获取账户地址
    */
   .then(result => {
+    console.log('----------get Accounts------------')
     return new Promise(function(resolve, reject) {
       // Retrieve account
 
@@ -99,6 +101,7 @@ let getWeb3 = new Promise((resolve, reject) => {
           } else {
             // clearInterval(t)
             result = Object.assign({}, result, { account })
+            console.log('----------get Accounts result------------')
             resolve(result)
           }
         }
@@ -110,13 +113,15 @@ let getWeb3 = new Promise((resolve, reject) => {
    * 获取账户eth余额
    */
   .then(result => {
+    console.log('----------get Balance------------')
     return new Promise(function(resolve, reject) {
       // Retrieve balance for account
       result.web3().eth.getBalance(result.account[0], (err, balance) => {
         if (err) {
-          reject(new Error('Unable to retrieve balance for address: ' + result.account[0]))
+          reject(new Error('Unable to retrieve balance'))
         } else {
           result = Object.assign({}, result, { balance })
+          console.log('----------get Balance result------------')
           resolve(result)
         }
       })
