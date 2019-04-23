@@ -68,22 +68,24 @@ export default {
     }
   },
   watch: {
-   
+
   },
 
   beforeCreate() {
     console.log('registerWeb3 Action dispatched from my-zombie')
     this.$store.dispatch('registerWeb3')
   },
-  created() {
-  },
+  created() {},
   beforeDestroy() {
     this.zombiesContract = null
     this.cryptoZombies = null
     console.log('destroyed')
   },
-  mounted(){
-    this.setZombieContract()
+  mounted() {
+    let time = setInterval(() => {
+      if (this.account) clearInterval(time)
+      this.setZombieContract()
+    }, 1000)
 
   },
   methods: {
@@ -98,6 +100,7 @@ export default {
       this.cryptoZombies = web3.eth.contract(ZombieOwnershipABI).at(ZombieOwnershipRopstenAddr)
       console.log('setZombieContract')
       this.getZombiesCount(this.account)
+      console.log('this.account', this.account)
 
     },
     async getZombiesCount(owner) {
