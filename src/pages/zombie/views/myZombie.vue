@@ -23,6 +23,7 @@
         <router-link to="/home">Go to create</router-link>
       </v-layout>
     </v-container>
+    <Loading v-if="isLoading" />
   </div>
 </template>
 <script>
@@ -36,12 +37,14 @@ import { toNum, random } from 'utils'
 import { callForContract } from 'utils/web3'
 
 import ZombieChar from './../components/ZombieChar.vue'
-
+import Loading from '@/components/loading.vue'
 export default {
   name: 'my-zombie',
 
   data() {
     return {
+      isLoading: true,
+
       zombiesContract: undefined,
       cryptoZombies: undefined,
 
@@ -54,7 +57,8 @@ export default {
     }
   },
   components: {
-    ZombieChar
+    ZombieChar,
+    Loading
   },
   computed: {
     ...mapState({
@@ -67,27 +71,23 @@ export default {
       return random(8)
     }
   },
-  watch: {
-
-  },
-
   beforeCreate() {
     console.log('registerWeb3 Action dispatched from my-zombie')
     this.$store.dispatch('registerWeb3')
   },
   created() {},
-  beforeDestroy() {
-    this.zombiesContract = null
-    this.cryptoZombies = null
-    console.log('destroyed')
-  },
   mounted() {
     let time = setInterval(() => {
       if (this.account) clearInterval(time)
       this.setZombieContract()
     }, 1000)
-
   },
+  beforeDestroy() {
+    this.zombiesContract = null
+    this.cryptoZombies = null
+    console.log('destroyed')
+  },
+
   methods: {
     // getWeb3() {
     //   this.$store.dispatch('registerWeb3')
@@ -100,12 +100,11 @@ export default {
       this.cryptoZombies = web3.eth.contract(ZombieOwnershipABI).at(ZombieOwnershipRopstenAddr)
       console.log('setZombieContract')
       this.getZombiesCount(this.account)
-      console.log('this.account', this.account)
-
     },
-    async getZombiesCount(owner) {
+    getZombiesCount(owner) {
       console.log('owner', owner)
       let encoded = '0x' + abi.simpleEncode('balanceOf(address):(uint256)', owner).toString('hex')
+      this.isLoading = false
 
       // let result = await callForContract(ZombieOwnershipRopstenAddr, encoded)
       // let count = toNum(result)
