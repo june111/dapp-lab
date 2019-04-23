@@ -7,7 +7,7 @@
 https://cryptozombies.io/en/lesson/6/chapter/10
 
 
-Implementing functions for attack, changeName, changeDna, and the ERC721 functions transfer, ownerOf, balanceOf, etc. 
+Implementing functions for attack, changeName, changeDna, and the ERC721 functions transfer, etc. 
 
 Implementing an "admin page" where you can execute setKittyContractAddress, setLevelUpFee, and withdraw. 
 

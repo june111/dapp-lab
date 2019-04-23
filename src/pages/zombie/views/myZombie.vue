@@ -1,8 +1,22 @@
 <template>
   <div>
     <v-toolbar color="pink" dark>
+      <!-- ---------------- setting ---------------- -->
+      <v-menu>
+        <template v-slot:activator="{ on }">
+          <v-btn dark icon v-on="on">
+            <v-icon>more_vert</v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-tile v-for="(item, i) in items" :key="i" @click="">
+            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
       <v-toolbar-title>My zombies</v-toolbar-title>
     </v-toolbar>
+    <!-- ---------------- zombies ---------------- -->
     <v-container fluid grid-list-lg>
       <template v-for="item in zombieList">
         <v-layout row wrap v-if="showZombie">
@@ -42,6 +56,10 @@ export default {
 
   data() {
     return {
+      items: [
+        { title: 'Change DNA' },
+        { title: 'Change Name' },
+      ],
       isLoading: true,
 
       zombiesContract: undefined,
@@ -79,7 +97,7 @@ export default {
       if (newValue !== oldValue) this.getZombiesCount(this.account)
     },
     balance: function(newValue, oldValue) {
-    	console.log('-----------oldValue-----------',oldValue)
+      console.log('-----------oldValue-----------', oldValue)
     },
   },
 
@@ -92,7 +110,7 @@ export default {
       if (this.account) clearInterval(time)
       this.setZombieContract()
     }, 1000)
-    	console.log('-----------balance-----------',this.balance)
+    console.log('-----------balance-----------', this.balance)
 
   },
   mounted() {},
