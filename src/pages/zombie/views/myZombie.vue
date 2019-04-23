@@ -94,14 +94,10 @@ export default {
     setZombieContract() {
       // this.zombiesContract = web3.eth.contract(ZombieOwnershipABI);
       // this.cryptoZombies = this.zombiesContract.at(ZombieOwnershipRopstenAddr);
-      try{
+
       this.cryptoZombies = web3.eth.contract(ZombieOwnershipABI).at(ZombieOwnershipRopstenAddr)
- console.log('setZombieContract')
+      console.log('setZombieContract')
       this.getZombiesCount(this.account)
-      }catch(err){
-console.log('err',err)
-      }
-     
 
     },
     async getZombiesCount(owner) {
