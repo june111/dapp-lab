@@ -15,6 +15,7 @@ let getWeb3 = new Promise((resolve, reject) => {
     try {
       // Request account access if needed
       ethereum.enable()
+      console.log('ethereum',ethereum.selectedAddress)
       // Acccounts now exposed
       resolve({
         injectedWeb3: window.web3.isConnected(),
@@ -97,7 +98,7 @@ let getWeb3 = new Promise((resolve, reject) => {
           if (account.length === 0) {
             reject(new Error('Unable to connect to Metamask'))
           } else {
-            // console.log('getWeb3 account', account)
+            console.log('getWeb3 account', account)
             // clearInterval(t)
             result = Object.assign({}, result, { account })
             resolve(result)
@@ -113,6 +114,7 @@ let getWeb3 = new Promise((resolve, reject) => {
   .then(result => {
     return new Promise(function (resolve, reject) {
       // Retrieve balance for account
+            console.log('result account', result)
       result.web3().eth.getBalance(result.account[0], (err, balance) => {
         if (err) {
           reject(new Error('Unable to retrieve balance for address: ' + result.account[0]))
