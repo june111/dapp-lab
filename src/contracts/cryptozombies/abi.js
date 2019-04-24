@@ -1,5 +1,5 @@
 
-export const ZombieOwnershipABI = [
+export const ABI = [
 	{
 		"constant": false,
 		"inputs": [
@@ -14,8 +14,8 @@ export const ZombieOwnershipABI = [
 		],
 		"name": "approve",
 		"outputs": [],
-		"payable": true,
-		"stateMutability": "payable",
+		"payable": false,
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -107,8 +107,8 @@ export const ZombieOwnershipABI = [
 		],
 		"name": "transferFrom",
 		"outputs": [],
-		"payable": true,
-		"stateMutability": "payable",
+		"payable": false,
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -201,7 +201,7 @@ export const ZombieOwnershipABI = [
 		"name": "ownerOf",
 		"outputs": [
 			{
-				"name": "",
+				"name": "owner",
 				"type": "address"
 			}
 		],
@@ -220,7 +220,7 @@ export const ZombieOwnershipABI = [
 		"name": "balanceOf",
 		"outputs": [
 			{
-				"name": "",
+				"name": "balance",
 				"type": "uint256"
 			}
 		],
@@ -298,6 +298,20 @@ export const ZombieOwnershipABI = [
 		"type": "function"
 	},
 	{
+		"constant": true,
+		"inputs": [],
+		"name": "levelUpFee",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"constant": false,
 		"inputs": [
 			{
@@ -348,17 +362,17 @@ export const ZombieOwnershipABI = [
 		"inputs": [
 			{
 				"indexed": true,
-				"name": "_from",
+				"name": "from",
 				"type": "address"
 			},
 			{
 				"indexed": true,
-				"name": "_to",
+				"name": "to",
 				"type": "address"
 			},
 			{
 				"indexed": true,
-				"name": "_tokenId",
+				"name": "tokenId",
 				"type": "uint256"
 			}
 		],
@@ -370,21 +384,43 @@ export const ZombieOwnershipABI = [
 		"inputs": [
 			{
 				"indexed": true,
-				"name": "_owner",
+				"name": "owner",
 				"type": "address"
 			},
 			{
 				"indexed": true,
-				"name": "_approved",
+				"name": "approved",
 				"type": "address"
 			},
 			{
 				"indexed": true,
-				"name": "_tokenId",
+				"name": "tokenId",
 				"type": "uint256"
 			}
 		],
 		"name": "Approval",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "challenger",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "target",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "winner",
+				"type": "uint256"
+			}
+		],
+		"name": "BattleResult",
 		"type": "event"
 	},
 	{
@@ -429,4 +465,4 @@ export const ZombieOwnershipABI = [
 ]
 
 
-export const ZombieOwnershipRopstenAddr = '0xda101a73c11d379fcd33c34b88f618246e516e88'
+export const ZombieOwnershipRopstenAddr = '0xadad7992a1f7f416ece7cc00928207b236825c15'

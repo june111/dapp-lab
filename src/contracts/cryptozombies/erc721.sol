@@ -1,11 +1,11 @@
 pragma solidity ^0.5.2;
 
 contract ERC721 {
-  event Transfer(address indexed _from, address indexed _to, uint256 indexed _tokenId);
-  event Approval(address indexed _owner, address indexed _approved, uint256 indexed _tokenId);
+  event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
+  event Approval(address indexed owner, address indexed approved, uint256 indexed tokenId);
 
-  function balanceOf(address _owner) external view returns (uint256);
-  function ownerOf(uint256 _tokenId) external view returns (address);
-  function transferFrom(address _from, address _to, uint256 _tokenId) external payable;
-  function approve(address _approved, uint256 _tokenId) external payable;
+  function balanceOf(address owner) public view returns (uint256 balance);
+  function ownerOf(uint256 tokenId) public view returns (address owner);
+  function transferFrom(address from, address to, uint256 tokenId) public;
+  function approve(address to, uint256 tokenId) public;
 }
