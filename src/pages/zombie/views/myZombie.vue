@@ -9,13 +9,15 @@
           </v-btn>
         </template>
         <v-list>
-          <v-list-tile v-for="(item, i) in items" :key="i" @click="">
+          <v-list-tile v-for="(item, i) in items" :key="'menu-'+i" @click="handleSetting(item)">
             <v-list-tile-title>{{ item.title }}</v-list-tile-title>
           </v-list-tile>
         </v-list>
       </v-menu>
       <v-toolbar-title>My zombies</v-toolbar-title>
     </v-toolbar>
+    <v-btn color="info" @click="test">test</v-btn>
+    <v-btn color="error" @click="handleAttack">Attack</v-btn>
     <!-- ---------------- zombies ---------------- -->
     <v-container fluid grid-list-lg>
       <template v-for="item in zombieList">
@@ -23,19 +25,40 @@
           <v-flex xs6>
             <ZombieChar :zombieName="item.name" :zombieDescription="'Level '+item.level" :skinColorChoice="item.zombieDetails.skinColorChoice" :clothesColorChoice="item.zombieDetails.clothesColorChoice" :eyeColorChoice="item.zombieDetails.eyeColorChoice" :headChoice="item.zombieDetails.headChoice" :shirtChoice="item.zombieDetails.shirtChoice" :eyeChoice="item.zombieDetails.eyeChoice" :hideNameField="false" />
           </v-flex>
-          <v-flex xs6>
-            <v-btn color="info" @click="isBattle = true">Battle</v-btn>
-            <v-btn color="error" @click="handleAttack">Attack</v-btn>
-            <div v-if="isBattle == true">
+          <!-- <v-flex xs6> 
+         	<v-btn color="info" @click="isBattle = true">Battle</v-btn> 
+               <div v-if="isBattle == true">
               <ZombieChar :zombieName="targetZombieName" :autoGenerate="true" :hideNameField="false" v-on:currentDna="currentDna" />
-            </div>
-          </v-flex>
+            </div> 
+           </v-flex> -->
         </v-layout>
       </template>
       <v-layout v-if="!showZombie">
         <router-link to="/create">Go to create</router-link>
       </v-layout>
     </v-container>
+    <!-- ---------------- dialog ---------------- -->
+    <v-dialog v-model="dialog" persistent max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Transfer From</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container grid-list-md>
+            <v-layout wrap>
+              <v-flex xs12>
+                <v-text-field label="Address" required v-model="transferToAddr"></v-text-field>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
+          <v-btn color="blue darken-1" flat @click="handleTransferForm">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <Loading v-if="isLoading" />
   </div>
 </template>
@@ -43,10 +66,11 @@
 import { mapState, mapGetters } from 'vuex'
 import abi from 'ethereumjs-abi'
 import {
-  ZombieOwnershipABI,
+  ABI,
   ZombieOwnershipRopstenAddr
 } from 'contracts/cryptozombies/abi'
 import { toNum, random } from 'utils'
+import { getWeb3Filter } from './../utils/handleEventLog'
 import { callForContract } from 'utils/web3'
 
 import ZombieChar from './../components/ZombieChar.vue'
@@ -57,8 +81,8 @@ export default {
   data() {
     return {
       items: [
-        { title: 'Change DNA' },
-        { title: 'Change Name' },
+        { title: 'Level Up' },
+        { title: 'Transfer' },
       ],
       isLoading: true,
 
@@ -70,6 +94,9 @@ export default {
 
       targetZombieDna: '',
       isBattle: false,
+
+      dialog: false,
+      transferToAddr: ''
 
     }
   },
@@ -84,21 +111,17 @@ export default {
       hvProvider: state => state.hvProvider
 
     }),
-    ...mapGetters([
-      // 账户eth余额
-      'balance'
-    ]),
+
     targetZombieName: function() {
       return random(8)
     }
   },
   watch: {
     account: function(newValue, oldValue) {
+      console.log('----------- account change -----------')
       if (newValue !== oldValue) this.getZombiesCount(this.account)
     },
-    balance: function(newValue, oldValue) {
-      console.log('-----------oldValue-----------', oldValue)
-    },
+
   },
 
   beforeCreate() {
@@ -110,7 +133,7 @@ export default {
       if (this.account) clearInterval(time)
       this.setZombieContract()
     }, 1000)
-    console.log('-----------balance-----------', this.balance)
+    // console.log('----------- balance -----------', this.balance)
 
   },
   mounted() {},
@@ -124,13 +147,17 @@ export default {
     // getWeb3() {
     //   this.$store.dispatch('registerWeb3')
     // },
+    test() {
 
+      getWeb3Filter(5466000, 'latest', ZombieOwnershipRopstenAddr, [web3.sha3('NewZombie(uint256,string,uint256)')], ABI)
+
+    },
     setZombieContract() {
       // this.zombiesContract = web3.eth.contract(ZombieOwnershipABI);
       // this.cryptoZombies = this.zombiesContract.at(ZombieOwnershipRopstenAddr);
 
-      this.cryptoZombies = web3.eth.contract(ZombieOwnershipABI).at(ZombieOwnershipRopstenAddr)
-      console.log('setZombieContract')
+      this.cryptoZombies = web3.eth.contract(ABI).at(ZombieOwnershipRopstenAddr)
+      console.log('----------- set Zombie Contract -----------')
       this.getZombiesCount(this.account)
     },
     async getZombiesCount(owner) {
@@ -144,7 +171,6 @@ export default {
       this.getZombies(count)
 
     },
-    // @dev 多个的情况
     getZombies(count) {
       if (count === 0) {
         this.showZombie = false
@@ -153,13 +179,19 @@ export default {
         this.getZombiesByOwner(this.account)
       }
     },
+
     getZombiesByOwner(owner) {
       this.cryptoZombies.getZombiesByOwner(owner, (err, result) => {
         if (err) {
           console.error(err)
         } else {
-          let index = toNum(result)
-          this.getZombiesByIndex(index)
+
+          const len = result.length
+          for (let i = 0; i < len; i++) {
+            let index = toNum(result[i])
+            this.getZombiesByIndex(index)
+          }
+
         }
       })
     },
@@ -169,6 +201,7 @@ export default {
           console.error(err)
         } else {
           let myzombie = {
+            zombieId: index,
             name: result[0],
             dna: String(toNum(result[1])),
             level: toNum(result[2]),
@@ -215,10 +248,10 @@ export default {
       console.log('currentDna', currentDna)
     },
     handleAttack() {
-      this.attack(0, 0)
+      this.attack(0, 2)
     },
-    attack(_zombieId, _targetId) {
-      this.cryptoZombies.attack(_zombieId, _targetId, {
+    attack(zombieId, targetId) {
+      this.cryptoZombies.attack(zombieId, targetId, {
         from: this.account,
         to: ZombieOwnershipRopstenAddr
       }, (err, result) => {
@@ -228,7 +261,73 @@ export default {
           console.log('result', result)
         }
       })
-    }
+    },
+    // ------------------ Level Up ---------------
+    getLevelUpFee() {
+      const encoded = '0x' + abi.methodID('levelUpFee', []).toString('hex')
+      return new Promise(async (resolve, reject) => {
+        let result = await callForContract(ZombieOwnershipRopstenAddr, encoded)
+        resolve(toNum(result))
+      })
+    },
+
+    levelUp(zombieId, levelUpFee) {
+      this.cryptoZombies.levelUp(zombieId, {
+        from: this.account,
+        value: web3.toWei(levelUpFee, 'ether'),
+        to: ZombieOwnershipRopstenAddr
+      }, (err, result) => {
+        if (err) {
+          console.error(err)
+        } else {
+          console.log('result', result)
+        }
+      })
+    },
+
+    // @dev choose zombieId
+    async handleLevelUp() {
+      let levelUpFee = await this.getLevelUpFee() / Math.pow(10, 18)
+      const zombieId = this.zombieList[0].zombieId
+      this.levelUp(zombieId, levelUpFee)
+    },
+
+
+    // ------------------ Transfer ---------------
+    handleTransfer() {
+      this.dialog = true
+    },
+    handleTransferForm() {
+      this.dialog = false
+      this.transferFrom(this.account, this.transferToAddr, 1)
+    },
+    transferFrom(from, to, zombieId) {
+      this.cryptoZombies.transferFrom(from, to, zombieId, {
+        from: this.account,
+        to: ZombieOwnershipRopstenAddr
+      }, (err, result) => {
+        if (err) {
+          console.error(err)
+        } else {
+          console.log('result', result)
+        }
+      })
+    },
+
+    handleSetting(item) {
+      const type = item.title
+      switch (type) {
+        case 'Level Up':
+          this.handleLevelUp()
+          break;
+        case 'Transfer':
+          this.handleTransfer()
+          break;
+        default:
+          console.log('Just wait');
+      }
+
+    },
 
   }
 }

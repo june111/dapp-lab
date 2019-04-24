@@ -32,7 +32,7 @@
 <script>
 import { mapState, mapGetters } from 'vuex'
 import {
-  ZombieOwnershipABI,
+  ABI,
   ZombieOwnershipRopstenAddr
 } from 'contracts/cryptozombies/abi'
 import ZombieChar from './../components/ZombieChar.vue'
@@ -145,7 +145,7 @@ export default {
   methods: {
   
     setZombieContract() {
-      this.createZombies = web3.eth.contract(ZombieOwnershipABI).at(ZombieOwnershipRopstenAddr);
+      this.createZombies = web3.eth.contract(ABI).at(ZombieOwnershipRopstenAddr);
       console.log('Set Contract!')
     },
 
