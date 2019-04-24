@@ -21,7 +21,10 @@ export default new Router({
     }, {
       path: 'battle',
       component: () => import('./views/battle.vue')
-    }, ]
+    },  {
+      path: 'admin',
+      component: () => import('./views/admin.vue')
+    },]
   }, {
     path: '*',
     component: () => import('@/components/404.vue')
