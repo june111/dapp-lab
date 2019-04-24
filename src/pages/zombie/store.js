@@ -14,7 +14,7 @@ export default new Vuex.Store({
       web3Instance: null,
       networkId: null,
       account: null || Cookies.get('account'), // 账户地址
-      balance: null || Cookies.get('balance'), // eth余额
+      // balance: null || Cookies.get('balance'), // eth余额
       error: null
     },
     hvProvider: false || Cookies.get('hvProvider')
@@ -52,7 +52,7 @@ export default new Vuex.Store({
       let web3Copy = state.web3
       web3Copy.account = result.account[0]
       web3Copy.networkId = result.networkId
-      web3Copy.balance = result.balance
+      // web3Copy.balance = result.balance
       web3Copy.isInjected = result.injectedWeb3
       web3Copy.web3Instance = result.web3
       state.web3 = web3Copy
@@ -74,10 +74,10 @@ export default new Vuex.Store({
     pollWeb3Instance(state, payload) {
       // console.log('pollWeb3Instance mutation being executed', payload)
       state.web3.account = payload.account
-      state.web3.balance = payload.balance
-      // console.log('------------pollWeb3Instance---------')
+      // state.web3.balance = payload.balance
+      console.log('------------pollWeb3Instance---------')
       Cookies.set('account', payload.account)
-      Cookies.set('balance', payload.balance)
+      // Cookies.set('balance', payload.balance)
     }
 
   },
@@ -112,7 +112,7 @@ export default new Vuex.Store({
      * @DateTime 2018-09-07
      */
     pollWeb3({ commit }, payload) {
-      // console.log('pollWeb3 action being executed')
+      console.log('pollWeb3 action being executed')
       commit('pollWeb3Instance', payload)
     }
 
@@ -123,9 +123,9 @@ export default new Vuex.Store({
 
   },
   getters: {
-    balance: state => {
-      return toNum(state.web3.balance) / Math.pow(10, 18)
-    }
+    // balance: state => {
+    //   return toNum(state.web3.balance) / Math.pow(10, 18)
+    // }
 
   }
 })
