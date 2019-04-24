@@ -109,23 +109,4 @@ let getWeb3 = new Promise((resolve, reject) => {
     })
   })
 
-  /**
-   * 获取账户eth余额
-   */
-  .then(result => {
-    console.log('----------get Balance------------')
-    return new Promise(function(resolve, reject) {
-      // Retrieve balance for account
-      result.web3().eth.getBalance(result.account[0], (err, balance) => {
-        if (err) {
-          reject(new Error('Unable to retrieve balance'))
-        } else {
-          result = Object.assign({}, result, { balance })
-          console.log('----------get Balance result------------')
-          resolve(result)
-        }
-      })
-    })
-  })
-
 export default getWeb3
