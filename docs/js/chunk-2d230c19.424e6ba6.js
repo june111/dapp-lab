@@ -1,0 +1,1 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d230c19"],{ee47:function(e,n,t){"use strict";t.r(n);var o=function(){var e=this,n=e.$createElement,t=e._self._c||n;return t("div",[t("router-link",{attrs:{to:"/my-zombie"}},[e._v("my Zombie")])],1)},r=[],u=t("2877"),c={},i=Object(u["a"])(c,o,r,!1,null,null,null);n["default"]=i.exports}}]);
