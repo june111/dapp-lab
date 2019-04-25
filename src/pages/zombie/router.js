@@ -8,7 +8,7 @@ export default new Router({
   routes: [{
     path: '/',
     component: () => import('./components/layout.vue'),
-    redirect: '/home',
+    redirect: '/my-zombie',
     children: [{
       path: 'home',
       component: () => import('./views/home.vue')

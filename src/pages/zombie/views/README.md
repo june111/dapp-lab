@@ -7,7 +7,7 @@
 https://cryptozombies.io/en/lesson/6/chapter/10
 
 
-Implementing functions for attack, changeName, changeDna, etc. 
+Implementing functions for changeName, changeDna, etc. 
 
 Implementing an "admin page" where you can execute setKittyContractAddress, setLevelUpFee, and withdraw. 
 

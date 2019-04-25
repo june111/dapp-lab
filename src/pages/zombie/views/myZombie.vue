@@ -2,7 +2,7 @@
   <div>
     <v-toolbar color="pink" dark>
       <!-- ---------------- setting ---------------- -->
-      <v-menu>
+      <v-menu v-if="showZombie">
         <template v-slot:activator="{ on }">
           <v-btn dark icon v-on="on">
             <v-icon>more_vert</v-icon>
@@ -16,7 +16,7 @@
       </v-menu>
       <v-toolbar-title>My zombies</v-toolbar-title>
     </v-toolbar>
-    <v-btn color="info" @click="test">test</v-btn>
+    <!-- <v-btn color="info" @click="test">test</v-btn> -->
     <!-- ---------------- zombies ---------------- -->
     <v-container fluid grid-list-lg>
       <v-layout row wrap>
@@ -33,7 +33,7 @@
            </v-flex> -->
       </v-layout>
       <v-layout v-if="!showZombie">
-        <router-link to="/create">Go to create</router-link>
+        <v-btn block  dark @click="$router.push('/create')">Go to create your own zombie</v-btn>
       </v-layout>
     </v-container>
     <!-- ---------------- dialog ---------------- -->

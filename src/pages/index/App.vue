@@ -45,6 +45,13 @@ export default {
           }]
         },
         {
+          title: 'Card Game',
+          detail: [{
+            path: baseUrl + '/zombie.html',
+            title: 'Zombies form Loom'
+          }]
+        },
+        {
           title: 'Interactive function between smart contract and web3',
           detail: [{
             path: baseUrl + '/test.html#/contract-basic',
