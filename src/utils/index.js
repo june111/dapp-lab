@@ -146,3 +146,33 @@ export const promisify = (inner) =>
       }
     })
   );
+
+/**
+ * 对比2个数组，用数组中的某个对象值，取出不同的值
+ * @param    {Array}                 shortArr 短的数组
+ * @param    {Array}                 longArr  长度比shortArr长的数组
+ * @param    {String}                 property 用来筛选的key
+ * @return   {Array}                          数组
+ * @Author   June
+ * @DateTime 2019-04-25
+ */
+export function compareArrayData(shortArr, longArr, property) {
+  let result = []
+  for (let i = 0; i < longArr.length; i++) {
+    let obj = longArr[i];
+    let num = obj[property];
+    let isExist = false;
+    for (let j = 0; j < shortArr.length; j++) {
+      let aj = shortArr[j];
+      let n = aj[property];
+      if (n == num) {
+        isExist = true;
+        break;
+      }
+    }
+    if (!isExist) {
+      result.push(obj);
+    }
+  }
+  return result
+}

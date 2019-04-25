@@ -171,7 +171,7 @@ export default {
 <style lang="scss">
 .action-zombie {
   position: relative;
-  top: 300px;
+  top: 50px;
 }
 
 </style>

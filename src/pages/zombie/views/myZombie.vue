@@ -17,11 +17,10 @@
       <v-toolbar-title>My zombies</v-toolbar-title>
     </v-toolbar>
     <v-btn color="info" @click="test">test</v-btn>
-    <v-btn color="error" @click="handleAttack">Attack</v-btn>
     <!-- ---------------- zombies ---------------- -->
     <v-container fluid grid-list-lg>
       <v-layout row wrap>
-        <v-flex xs12 md6 v-for="item in zombieList">
+        <v-flex xs12 md6 v-for="item,index in zombieList" :key="'zombieList-'+index">
           <div v-if="showZombie">
             <ZombieChar :zombieName="item.name" :zombieDescription="'Level '+item.level" :skinColorChoice="item.zombieDetails.skinColorChoice" :clothesColorChoice="item.zombieDetails.clothesColorChoice" :eyeColorChoice="item.zombieDetails.eyeColorChoice" :headChoice="item.zombieDetails.headChoice" :shirtChoice="item.zombieDetails.shirtChoice" :eyeChoice="item.zombieDetails.eyeChoice" :hideNameField="false" />
           </div>
@@ -59,21 +58,44 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="chooseZombieDialog" scrollable max-width="300px">
+    <v-dialog v-model="chooseZombieDialog" scrollable max-width="600px">
       <v-card>
-        <v-card-title>Select a zombie to level up</v-card-title>
+        <v-card-title>Select a zombie to {{textMap[dialogStatus]}}</v-card-title>
         <v-divider></v-divider>
         <v-card-text style="height: 300px;">
-          <v-radio-group v-model="levelUpZombieId" column>
+          <v-radio-group v-if="dialogStatus =='levelUp'" v-model="chooseMyZombieId" column>
             <template v-for="item in zombieList">
               <v-radio :label="item.name" :value="item.zombieId"></v-radio>
             </template>
           </v-radio-group>
+          <div v-else>
+            <v-container fluid grid-list-lg>
+              <v-layout row wrap>
+                <v-flex xs6>
+                  My zombie
+                  <v-radio-group v-model="chooseMyZombieId" column>
+                    <template v-for="item in zombieList">
+                      <v-radio :label="item.name +' ('+ (toNum(timeNow) > toNum(item.readyTime)*1000? 'Ready':'Not Ready') + ')'" :value="item.zombieId" :disabled="toNum(timeNow) > toNum(item.readyTime)*1000? false:true"></v-radio>
+                    </template>
+                  </v-radio-group>
+                </v-flex>
+                <v-flex xs6>
+                  target zombie
+                  <v-radio-group v-model="chooseTargetZombieId" column>
+                    <template v-for="item in targetZombieList">
+                      <v-radio :label="item.name +' ('+ (toNum(timeNow) > toNum(item.readyTime)*1000? 'Ready':'Not Ready') + ')'" :value="item.zombieId" :disabled="toNum(timeNow) > toNum(item.readyTime)*1000? false:true"></v-radio>
+                    </template>
+                  </v-radio-group>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </div>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
-          <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
-          <v-btn color="blue darken-1" flat @click="handleLevelUp">Yes</v-btn>
+          <v-btn color="blue darken-1" flat @click="chooseZombieDialog = false">Close</v-btn>
+          <v-btn v-if="dialogStatus =='levelUp'" color="blue darken-1" flat @click="levelUpSubmit">Level Up</v-btn>
+          <v-btn v-else color="blue darken-1" flat @click="attackSubmit" :disabled="chooseMyZombieId && chooseTargetZombieId?false:true">Attack</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -87,12 +109,17 @@ import {
   ABI,
   ZombieOwnershipRopstenAddr
 } from 'contracts/cryptozombies/abi'
-import { toNum, random } from 'utils'
+import { toNum, random, compareArrayData } from 'utils'
 import { getWeb3Filter } from './../utils/handleEventLog'
-import { callForContract } from 'utils/web3'
+import {
+  callForContract,
+  getGasPrice,
+  estimateGas
+} from 'utils/web3'
 
 import ZombieChar from './../components/ZombieChar.vue'
 import Loading from '@/components/loading.vue'
+const timeNow = new Date().getTime()
 export default {
   name: 'my-zombie',
 
@@ -101,23 +128,37 @@ export default {
       items: [
         { title: 'Level Up' },
         { title: 'Transfer' },
+        { title: 'Attack' },
       ],
       isLoading: true,
+      toNum: toNum,
+
+      timeNow: timeNow,
 
       zombiesContract: null,
       cryptoZombies: null,
 
-      zombieList: [],
+      zombieList: [], // my zombie
       showZombie: false,
+
+      allZombieList: [],
+      targetZombieList: [],
 
       targetZombieDna: '',
       isBattle: false,
+
+      textMap: {
+        attack: 'Attack',
+        levelUp: 'level up'
+      },
+      dialogStatus: '',
 
       dialog: false,
       transferToAddr: '',
 
       chooseZombieDialog: false,
-      levelUpZombieId: null,
+      chooseMyZombieId: null,
+      chooseTargetZombieId: null,
 
     }
   },
@@ -167,10 +208,11 @@ export default {
     //   this.$store.dispatch('registerWeb3')
     // },
     test() {
-      // var decoded = abi.rawDecode(ABI, "NewZombie(uint256,string,uint256)" , data)
-      getWeb3Filter(5466000, 'latest', ZombieOwnershipRopstenAddr, [web3.sha3('NewZombie(uint256,string,uint256)')], ABI)
+
 
     },
+
+
     setZombieContract() {
       // this.zombiesContract = web3.eth.contract(ZombieOwnershipABI);
       // this.cryptoZombies = this.zombiesContract.at(ZombieOwnershipRopstenAddr);
@@ -179,6 +221,9 @@ export default {
       console.log('----------- set Zombie Contract -----------')
       this.getZombiesCount(this.account)
     },
+
+    // ------------------ get Zombies ---------------
+
     async getZombiesCount(owner) {
       this.zombieList = []
       console.log('owner', owner)
@@ -198,82 +243,91 @@ export default {
         this.getZombiesByOwner(this.account)
       }
     },
-
-    getZombiesByOwner(owner) {
-      this.cryptoZombies.getZombiesByOwner(owner, (err, result) => {
+    // @dev Cannot read property 'getZombiesByOwner' of null
+    async getZombiesByOwner(owner) {
+      this.cryptoZombies.getZombiesByOwner(owner, async (err, result) => {
         if (err) {
           console.error(err)
         } else {
-
           const len = result.length
           for (let i = 0; i < len; i++) {
             let index = toNum(result[i])
-            this.getZombiesByIndex(index)
+            let myzombie = await this.getZombiesByIndex(index)
+            this.zombieList.push(myzombie)
           }
-
         }
       })
     },
+
     getZombiesByIndex(index) {
-      this.cryptoZombies.zombies(index, (err, result) => {
-        if (err) {
-          console.error(err)
-        } else {
-          let myzombie = {
-            zombieId: index,
-            name: result[0],
-            dna: String(toNum(result[1])),
-            level: toNum(result[2]),
-            readyTime: toNum(result[3]),
-            winCount: toNum(result[4]),
-            lossCount: toNum(result[5]),
-            zombieDetails: this.generateZombie(result[0], String(toNum(result[1])))
+      return new Promise(async (resolve, reject) => {
+        this.cryptoZombies.zombies(index, (err, result) => {
+          if (err) {
+            console.error(err)
+          } else {
+            let myzombie = {
+              zombieId: index,
+              name: result[0],
+              dna: String(toNum(result[1])),
+              level: toNum(result[2]),
+              readyTime: toNum(result[3]),
+              winCount: toNum(result[4]),
+              lossCount: toNum(result[5]),
+              zombieDetails: this.generateZombie(result[0], String(toNum(result[1])))
+            }
+            resolve(myzombie)
+            // console.log(myzombie)
           }
-          this.zombieList.push(myzombie)
-          console.log(myzombie)
-        }
+        })
       })
     },
-    // take the Zombie dna, and update our image
-    generateZombie(name, dna) {
-      let dnaStr = String(dna)
-      // pad DNA with leading zeroes if it's less than 16 characters
-      while (dnaStr.length < 16)
-        dnaStr = "0" + dnaStr
 
-      let zombieDetails = {
-        // first 2 digits make up the head. We have 7 possible heads, so % 7
-        // to get a number 0 - 6, then add 1 to make it 1 - 7. Then we have 7
-        // image files named "head1.png" through "head7.png" we load based on
-        // this number:
-        headChoice: dnaStr.substring(0, 2) % 7 + 1,
-        // 2nd 2 digits make up the eyes, 11 variations:
-        eyeChoice: dnaStr.substring(2, 4) % 11 + 1,
-        // 6 variations of shirts:
-        shirtChoice: dnaStr.substring(4, 6) % 6 + 1,
-        // last 6 digits control color. Updated using CSS filter: hue-rotate
-        // which has 360 degrees:
-        skinColorChoice: parseInt(dnaStr.substring(6, 8) / 100 * 360),
-        eyeColorChoice: parseInt(dnaStr.substring(8, 10) / 100 * 360),
-        clothesColorChoice: parseInt(dnaStr.substring(10, 12) / 100 * 360),
-        zombieName: name,
-        zombieDescription: "A Level 1 CryptoZombie",
+    async getAllZombie() {
+      this.isLoading = true
+
+      let eventsList = await getWeb3Filter(5466000, 'latest', ZombieOwnershipRopstenAddr, [web3.sha3('NewZombie(uint256,string,uint256)')], ABI)
+      let len = eventsList.length
+
+      for (let i = 0; i < len; i++) {
+        let index = eventsList[i].events[0].value
+        let myzombie = await this.getZombiesByIndex(index)
+        this.allZombieList.push(myzombie)
       }
-      return zombieDetails
+
+      this.targetZombieList.length === 0 ? this.targetZombieList = compareArrayData(this.zombieList, this.allZombieList, 'zombieId') : ''
     },
 
-    currentDna(currentDna) {
-      this.targetZombieDna = currentDna
-      console.log('currentDna', currentDna)
+    listAllZombie() {
+      this.allZombieList.length === 0 ? this.getAllZombie() : ''
     },
+
+    // ------------------ Attack ---------------
+
     handleAttack() {
-      this.attack(0, 2)
+      this.chooseMyZombieId = null
+      this.chooseTargetZombieId = null
+      this.listAllZombie()
+      this.dialogStatus = 'attack'
+      this.chooseZombieDialog = true
+      this.isLoading = false
     },
-    attack(zombieId, targetId) {
-      this.cryptoZombies.attack(zombieId, targetId, {
+    attackSubmit() {
+      this.chooseZombieDialog = false
+      this.attack(this.chooseMyZombieId, this.chooseTargetZombieId)
+    },
+    async attack(zombieId, targetId) {
+      let gasPrice = await getGasPrice()
+      let encoded = '0x' + abi.simpleEncode('attack(uint256,uint256)', zombieId, targetId).toString('hex')
+      let rawTx = {
+        gasPrice: gasPrice,
         from: this.account,
+        data: encoded,
         to: ZombieOwnershipRopstenAddr
-      }, (err, result) => {
+      }
+      let gas = await estimateGas(rawTx)
+      rawTx.gas = gas
+      console.log('rawTx', rawTx)
+      this.cryptoZombies.attack(zombieId, targetId, rawTx, (err, result) => {
         if (err) {
           console.error(err)
         } else {
@@ -281,6 +335,7 @@ export default {
         }
       })
     },
+
     // ------------------ Level Up ---------------
     getLevelUpFee() {
       const encoded = '0x' + abi.methodID('levelUpFee', []).toString('hex')
@@ -289,9 +344,15 @@ export default {
         resolve(toNum(result))
       })
     },
+
     handleLevelUp() {
+      this.dialogStatus = 'levelUp'
+      this.chooseZombieDialog = true
+    },
+    levelUpSubmit() {
       this.chooseZombieDialog = false
-      this.goLevelUp(this.levelUpZombieId)
+      this.goLevelUp(this.chooseMyZombieId)
+
     },
     async goLevelUp(zombieId) {
       let levelUpFee = await this.getLevelUpFee() / Math.pow(10, 18)
@@ -337,15 +398,52 @@ export default {
       const type = item.title
       switch (type) {
         case 'Level Up':
-          this.chooseZombieDialog = true
+          this.handleLevelUp()
           break;
         case 'Transfer':
           this.handleTransfer()
+          break;
+        case 'Attack':
+          this.handleAttack()
           break;
         default:
           console.log('Just wait');
       }
 
+    },
+
+
+    // take the Zombie dna, and update our image
+    generateZombie(name, dna) {
+      let dnaStr = String(dna)
+      // pad DNA with leading zeroes if it's less than 16 characters
+      while (dnaStr.length < 16)
+        dnaStr = "0" + dnaStr
+
+      let zombieDetails = {
+        // first 2 digits make up the head. We have 7 possible heads, so % 7
+        // to get a number 0 - 6, then add 1 to make it 1 - 7. Then we have 7
+        // image files named "head1.png" through "head7.png" we load based on
+        // this number:
+        headChoice: dnaStr.substring(0, 2) % 7 + 1,
+        // 2nd 2 digits make up the eyes, 11 variations:
+        eyeChoice: dnaStr.substring(2, 4) % 11 + 1,
+        // 6 variations of shirts:
+        shirtChoice: dnaStr.substring(4, 6) % 6 + 1,
+        // last 6 digits control color. Updated using CSS filter: hue-rotate
+        // which has 360 degrees:
+        skinColorChoice: parseInt(dnaStr.substring(6, 8) / 100 * 360),
+        eyeColorChoice: parseInt(dnaStr.substring(8, 10) / 100 * 360),
+        clothesColorChoice: parseInt(dnaStr.substring(10, 12) / 100 * 360),
+        zombieName: name,
+        zombieDescription: "A Level 1 CryptoZombie",
+      }
+      return zombieDetails
+    },
+
+    currentDna(currentDna) {
+      this.targetZombieDna = currentDna
+      console.log('currentDna', currentDna)
     },
 
   }

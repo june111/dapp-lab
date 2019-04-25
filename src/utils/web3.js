@@ -31,7 +31,7 @@ export function getGasPrice() {
   return new Promise((resolve, reject) => {
     window.web3.eth.getGasPrice((error, result) => {
       if (!error) {
-        resolve(result)
+        resolve(toNum(result))
       } else {
         console.error(error);
       }
