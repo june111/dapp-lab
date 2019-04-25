@@ -10,7 +10,7 @@ install:
   - npm install
 
 script:
-  - npm rebuild node-sass
+  - npm i node-sass -D
   - npm run build
 
 after_script:
