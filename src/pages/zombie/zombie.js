@@ -2,7 +2,6 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store'
-import {VueGlobalError} from '@/utils'
 Vue.config.productionTip = false
 
 // 支持IE11和Safari 9
@@ -20,8 +19,9 @@ Vue.use(Vuetify, {
 
 // vue防重复点击
 Vue.directive('preventReClick', {
-  inserted (el, binding) {
-    el.addEventListener('click', () => { if (!el.disabled) {
+  inserted(el, binding) {
+    el.addEventListener('click', () => {
+      if (!el.disabled) {
         el.disabled = true
         setTimeout(() => {
           el.disabled = false
@@ -33,8 +33,7 @@ Vue.directive('preventReClick', {
 
 new Vue({
   router,
-   store,
-  el:'#app',
-  render:h=>h(App)
+  store,
+  el: '#app',
+  render: h => h(App)
 })
-

@@ -1,7 +1,7 @@
 <template>
   <div class="zombie-char" v-images-loaded="zombieLoaded">
     <div class="zombie-loading zombie-parts" v-show="!isZombieLoaded"></div>
-    <div class="zombie-parts-bg" v-show="isZombieLoaded" :class="partsVisible">
+    <div class="zombie-parts-bg" v-show="isZombieLoaded" >
       <div class="zombie-parts" >
         <img :style="clothesColor" v-show="!catMode" class="left-feet" src="./../assets/zombieparts/left-feet-1@2x.png">
         <img :style="clothesColor" v-show="!catMode" class="right-feet" src="./../assets/zombieparts/right-feet-1@2x.png">
@@ -144,13 +144,6 @@ export default {
     clothesColor() {
       return this.getColor(this.currentClothesColorChoice);
     },
-    partsVisible() {
-      const headVisible = `head-visible-${this.currentHeadChoice}`
-      const eyeVisible = `eye-visible-${this.currentEyeChoice}`
-      const shirtVisible = `shirt-visible-${this.currentShirtChoice}`
-
-      return `${headVisible} ${eyeVisible} ${shirtVisible}`
-    },
     hideNameFieldClass() {
       return (!!this.hideNameField || !this.isZombieLoaded) ? "hide" : "zombie-card card bg-shaded"
     },
@@ -236,14 +229,14 @@ export default {
 
 .zombie-parts-bg {
   height: 550px;
-  background: url('/dapp-lab/img/tester-bg@2x.2a4a2235.png') center no-repeat;
+  background: url('./../assets/zombieparts/tester-bg@2x.png') center no-repeat;
   background-size: contain;
 }
 
 .zombie-parts {
   position: relative;
   margin-left: -2vh;
-  top: 15vh;
+  top: 15vh; // zombie's position
 
   .head {
     width: 28vh;

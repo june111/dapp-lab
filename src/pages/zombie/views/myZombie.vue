@@ -20,19 +20,19 @@
     <v-btn color="error" @click="handleAttack">Attack</v-btn>
     <!-- ---------------- zombies ---------------- -->
     <v-container fluid grid-list-lg>
-        <v-layout row wrap >
-          <v-flex xs12 md6 v-for="item in zombieList">
-            <div  v-if="showZombie">
-              <ZombieChar :zombieName="item.name" :zombieDescription="'Level '+item.level" :skinColorChoice="item.zombieDetails.skinColorChoice" :clothesColorChoice="item.zombieDetails.clothesColorChoice" :eyeColorChoice="item.zombieDetails.eyeColorChoice" :headChoice="item.zombieDetails.headChoice" :shirtChoice="item.zombieDetails.shirtChoice" :eyeChoice="item.zombieDetails.eyeChoice" :hideNameField="false" />
-            </div>
-          </v-flex>
-          <!-- <v-flex xs6> 
-         	<v-btn color="info" @click="isBattle = true">Battle</v-btn> 
+      <v-layout row wrap>
+        <v-flex xs12 md6 v-for="item in zombieList">
+          <div v-if="showZombie">
+            <ZombieChar :zombieName="item.name" :zombieDescription="'Level '+item.level" :skinColorChoice="item.zombieDetails.skinColorChoice" :clothesColorChoice="item.zombieDetails.clothesColorChoice" :eyeColorChoice="item.zombieDetails.eyeColorChoice" :headChoice="item.zombieDetails.headChoice" :shirtChoice="item.zombieDetails.shirtChoice" :eyeChoice="item.zombieDetails.eyeChoice" :hideNameField="false" />
+          </div>
+        </v-flex>
+        <!-- <v-flex xs6> 
+          <v-btn color="info" @click="isBattle = true">Battle</v-btn> 
                <div v-if="isBattle == true">
               <ZombieChar :zombieName="targetZombieName" :autoGenerate="true" :hideNameField="false" v-on:currentDna="currentDna" />
             </div> 
            </v-flex> -->
-        </v-layout>
+      </v-layout>
       <v-layout v-if="!showZombie">
         <router-link to="/create">Go to create</router-link>
       </v-layout>
@@ -56,6 +56,24 @@
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
           <v-btn color="blue darken-1" flat @click="handleTransferForm">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="chooseZombieDialog" scrollable max-width="300px">
+      <v-card>
+        <v-card-title>Select a zombie to level up</v-card-title>
+        <v-divider></v-divider>
+        <v-card-text style="height: 300px;">
+          <v-radio-group v-model="levelUpZombieId" column>
+            <template v-for="item in zombieList">
+              <v-radio :label="item.name" :value="item.zombieId"></v-radio>
+            </template>
+          </v-radio-group>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
+          <v-btn color="blue darken-1" flat @click="handleLevelUp">Yes</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -86,8 +104,8 @@ export default {
       ],
       isLoading: true,
 
-      zombiesContract: undefined,
-      cryptoZombies: undefined,
+      zombiesContract: null,
+      cryptoZombies: null,
 
       zombieList: [],
       showZombie: false,
@@ -96,7 +114,10 @@ export default {
       isBattle: false,
 
       dialog: false,
-      transferToAddr: ''
+      transferToAddr: '',
+
+      chooseZombieDialog: false,
+      levelUpZombieId: null,
 
     }
   },
@@ -268,7 +289,14 @@ export default {
         resolve(toNum(result))
       })
     },
-
+    handleLevelUp() {
+      this.chooseZombieDialog = false
+      this.goLevelUp(this.levelUpZombieId)
+    },
+    async goLevelUp(zombieId) {
+      let levelUpFee = await this.getLevelUpFee() / Math.pow(10, 18)
+      this.levelUp(zombieId, levelUpFee)
+    },
     levelUp(zombieId, levelUpFee) {
       this.cryptoZombies.levelUp(zombieId, {
         from: this.account,
@@ -281,13 +309,6 @@ export default {
           console.log('result', result)
         }
       })
-    },
-
-    // @dev choose zombieId
-    async handleLevelUp() {
-      let levelUpFee = await this.getLevelUpFee() / Math.pow(10, 18)
-      const zombieId = this.zombieList[0].zombieId
-      this.levelUp(zombieId, levelUpFee)
     },
 
 
@@ -316,7 +337,7 @@ export default {
       const type = item.title
       switch (type) {
         case 'Level Up':
-          this.handleLevelUp()
+          this.chooseZombieDialog = true
           break;
         case 'Transfer':
           this.handleTransfer()
@@ -332,5 +353,4 @@ export default {
 
 </script>
 <style lang="scss" scoped>
-
 </style>

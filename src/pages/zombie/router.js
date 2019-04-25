@@ -18,13 +18,16 @@ export default new Router({
     }, {
       path: 'my-zombie',
       component: () => import('./views/myZombie.vue')
-    }, {
-      path: 'battle',
-      component: () => import('./views/battle.vue')
-    },  {
-      path: 'admin',
-      component: () => import('./views/admin.vue')
-    },]
+    }, 
+    // {
+    //   path: 'battle',
+    //   component: () => import('./views/battle.vue')
+    // },  
+    // {
+    //   path: 'admin',
+    //   component: () => import('./views/admin.vue')
+    // },
+    ]
   }, {
     path: '*',
     component: () => import('@/components/404.vue')
