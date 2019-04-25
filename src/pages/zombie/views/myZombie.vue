@@ -20,10 +20,11 @@
     <v-btn color="error" @click="handleAttack">Attack</v-btn>
     <!-- ---------------- zombies ---------------- -->
     <v-container fluid grid-list-lg>
-      <template v-for="item in zombieList">
-        <v-layout row wrap v-if="showZombie">
-          <v-flex xs6>
-            <ZombieChar :zombieName="item.name" :zombieDescription="'Level '+item.level" :skinColorChoice="item.zombieDetails.skinColorChoice" :clothesColorChoice="item.zombieDetails.clothesColorChoice" :eyeColorChoice="item.zombieDetails.eyeColorChoice" :headChoice="item.zombieDetails.headChoice" :shirtChoice="item.zombieDetails.shirtChoice" :eyeChoice="item.zombieDetails.eyeChoice" :hideNameField="false" />
+        <v-layout row wrap >
+          <v-flex xs12 md6 v-for="item in zombieList">
+            <div  v-if="showZombie">
+              <ZombieChar :zombieName="item.name" :zombieDescription="'Level '+item.level" :skinColorChoice="item.zombieDetails.skinColorChoice" :clothesColorChoice="item.zombieDetails.clothesColorChoice" :eyeColorChoice="item.zombieDetails.eyeColorChoice" :headChoice="item.zombieDetails.headChoice" :shirtChoice="item.zombieDetails.shirtChoice" :eyeChoice="item.zombieDetails.eyeChoice" :hideNameField="false" />
+            </div>
           </v-flex>
           <!-- <v-flex xs6> 
          	<v-btn color="info" @click="isBattle = true">Battle</v-btn> 
@@ -32,7 +33,6 @@
             </div> 
            </v-flex> -->
         </v-layout>
-      </template>
       <v-layout v-if="!showZombie">
         <router-link to="/create">Go to create</router-link>
       </v-layout>
@@ -63,7 +63,7 @@
   </div>
 </template>
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 import abi from 'ethereumjs-abi'
 import {
   ABI,
@@ -133,8 +133,6 @@ export default {
       if (this.account) clearInterval(time)
       this.setZombieContract()
     }, 1000)
-    // console.log('----------- balance -----------', this.balance)
-
   },
   mounted() {},
   beforeDestroy() {
@@ -148,7 +146,7 @@ export default {
     //   this.$store.dispatch('registerWeb3')
     // },
     test() {
-
+      // var decoded = abi.rawDecode(ABI, "NewZombie(uint256,string,uint256)" , data)
       getWeb3Filter(5466000, 'latest', ZombieOwnershipRopstenAddr, [web3.sha3('NewZombie(uint256,string,uint256)')], ABI)
 
     },
@@ -333,5 +331,6 @@ export default {
 }
 
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+
 </style>
