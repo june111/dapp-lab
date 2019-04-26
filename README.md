@@ -28,7 +28,7 @@ Live version available at [http://blog.junezhu.top/dapp-lab/](http://blog.junezh
 
 * DApp
 	* Dice (Guesses the number from 1 to 10)
-	* Zombie card game (TBD)
+	* Zombie card game (Acknowledge Loom)
 	* Lottery (TBD)
 	* Airdrop (TBD)
 
