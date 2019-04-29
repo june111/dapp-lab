@@ -95,7 +95,7 @@
         <v-card-actions>
           <v-btn color="blue darken-1" flat @click="chooseZombieDialog = false">Close</v-btn>
           <v-btn v-if="dialogStatus =='levelUp'" color="blue darken-1" flat @click="levelUpSubmit">Level Up</v-btn>
-          <v-btn v-else color="blue darken-1" flat @click="attackSubmit" :disabled="chooseMyZombieId && chooseTargetZombieId?false:true">Attack</v-btn>
+          <v-btn v-else color="blue darken-1" flat @click="attackSubmit" :disabled="chooseMyZombieId != null && chooseTargetZombieId != null?false:true">Battle</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -128,7 +128,7 @@ export default {
       items: [
         { title: 'Level Up' },
         { title: 'Transfer' },
-        { title: 'Attack' },
+        { title: 'Battle' },
       ],
       isLoading: true,
       toNum: toNum,
@@ -148,7 +148,7 @@ export default {
       isBattle: false,
 
       textMap: {
-        attack: 'Attack',
+        attack: 'Battle',
         levelUp: 'level up'
       },
       dialogStatus: '',
@@ -301,7 +301,7 @@ export default {
       this.allZombieList.length === 0 ? this.getAllZombie() : ''
     },
 
-    // ------------------ Attack ---------------
+    // ------------------ Battle ---------------
 
     handleAttack() {
       this.chooseMyZombieId = null
@@ -403,7 +403,7 @@ export default {
         case 'Transfer':
           this.handleTransfer()
           break;
-        case 'Attack':
+        case 'Battle':
           this.handleAttack()
           break;
         default:

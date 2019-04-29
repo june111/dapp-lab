@@ -17,14 +17,14 @@
             <v-btn color="success" @click="handleCreate">Create Random Zombie</v-btn>
           </div>
         </v-flex>
-        <v-flex xs6>
+     <!--    <v-flex xs6>
           <template v-for="item in Choice">
             <v-flex xs12>
               <v-subheader class="pl-0">{{item.name}}</v-subheader>
               <v-slider color="red" thumb-color="red" thumb-label v-model="item.typeChoice" :max="item.max" :min="1" :step="1"></v-slider>
             </v-flex>
           </template>
-        </v-flex>
+        </v-flex> -->
       </v-layout>
     </v-container>
   </div>
