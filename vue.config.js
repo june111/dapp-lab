@@ -52,13 +52,6 @@ module.exports = {
           '^/xrf': ''
         }
       },
-      '/wa/': {
-        target: 'http://api.match.hexun.com/',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/wa': ''
-        }
-      }
     }, 
     // 设置代理
     before: app => {}
@@ -87,6 +80,13 @@ module.exports = {
 
   },
   configureWebpack: config => {
-
+ // cdn引用时配置externals
+    externals: {
+      'vue': 'Vue',
+      'vuex': 'Vuex',
+      'vue-router': 'VueRouter',
+      'vue-i18n': 'VueI18n',
+      'vuetify': 'Vuetify',
+    }
   }
 }
